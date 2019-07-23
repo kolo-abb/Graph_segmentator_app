@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="column">
+      <h2 style="text-align: center;">Upload image</h2>
+
+      <form style="text-align: center;" action="{% url 'upload_pic' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <p>
+            <input id="id_image" type="file" class="" name="image">
+        </p>
+            <input type="submit" value="Submit" />
+      </form>
+
+      <br>
+      <br>
+
+      <h2 style="text-align: center;">Choose algorithm</h2>
+
+
+  </div>
+
+  <div class="column">
+    <h2 style="text-align: center;"><strong>Uploaded image</strong></h2>
+
+    {% load static %}
+    <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+
+  </div>
+</div>
+{% endblock %}

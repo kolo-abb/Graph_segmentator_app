@@ -2,7 +2,6 @@ from PIL import Image
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 
-from segmentation_app.models import ExampleModel
 from segmentator import main_api as seg
 
 
@@ -15,8 +14,15 @@ from segmentation_app.forms import ImageUploadForm
 def home(request):
     return render(request, 'home.html')
 
+def segmentation(request):
+    return render(request, 'segmentation.html')
+
+def tracking(request):
+    return render(request, 'home.html')
+
+
 def mst(request):
-    return render(request, 'mst.html')
+    return render(request, 'home.html')
 
 @ensure_csrf_cookie
 def upload_pic(request):

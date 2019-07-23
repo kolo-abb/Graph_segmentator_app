@@ -1,8 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 <div>
-      <a href="{% url 'mst' %}">
-        <h3>MST</h3>
-      </a>
+    <h2 style="text-align: center;"><a href="{% url 'segmentation' %}"><span style="color: #333399;"><strong>Segmentation and Object Counting</strong></span></a></h2>
+    {% load static %}
+    <p style="text-align: center;"><img src="{% static 'images/dump-truck-segmented-1024x576.png' %}" alt="" width="600" height="250" /></p>
+
+    <br>
+    <br>
+
+    <h2 style="text-align: center;"><a href="{% url 'tracking' %}"><span style="color: #333399;"><strong>Object Tracking</strong></span></a></h2>
+
+    {% load static %}
+    <p style="text-align: center;"><img src="{% static 'images/GAN-birds-tracking.png' %}" alt="" width="600" height="250" /></p>
+
 </div>
 {% endblock %}

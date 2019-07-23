@@ -16,10 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url
 from segmentation_app import views
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
+    url(r'^segmentation/', views.segmentation, name='segmentation'),
+    url(r'^tracking/', views.tracking, name='tracking'),
     url(r'^mst/', views.mst, name='mst'),
     url(r'^upload_pic/', views.upload_pic, name='upload_pic'),
 ]
+
+urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
