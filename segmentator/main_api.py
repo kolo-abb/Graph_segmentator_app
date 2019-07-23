@@ -13,4 +13,3 @@ def mst_1const(img, edges_8=True, threshold=threshold_blood_cells_1, const=3.0,m
     forest=merge_small(forest, G, min_size)
     return get_segmented_image(forest, G), count_objects(forest)
 
-# print(mst_count_1const(Image.open("../static/images/red_blood_cells.png")))
