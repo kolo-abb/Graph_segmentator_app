@@ -27,6 +27,8 @@ urlpatterns = [
     url(r'^tracking/', views.tracking, name='tracking'),
     url(r'^mst/', views.mst, name='mst'),
     url(r'^upload_pic/', views.upload_pic, name='upload_pic'),
+    url(r'^run_algorithm/', views.run_algorithm, name='run_algorithm'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

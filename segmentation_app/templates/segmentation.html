@@ -4,8 +4,9 @@
   <div class="column">
       <h2 style="text-align: center;">Upload image</h2>
 
-      <form style="text-align: center;" action="{% url 'upload_pic' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+      <form style="text-align: center;"  method="post" enctype="multipart/form-data">{% csrf_token %}
         <p>
+            {% csrf_token %}
             <input id="id_image" type="file" class="" name="image">
         </p>
             <input type="submit" value="Submit" />
@@ -15,6 +16,14 @@
       <br>
 
       <h2 style="text-align: center;">Choose algorithm</h2>
+        <form style="text-align: center;" action="{% url 'run_algorithm' %}">
+          <select name="cars" size="5">
+            <option value="mst">Minimal Spanning Tree</option>
+            <option value="g_cut">Graph Cut</option>
+          </select>
+          <br><br>
+          <input type="submit">
+        </form>
 
 
   </div>
@@ -22,8 +31,12 @@
   <div class="column">
     <h2 style="text-align: center;"><strong>Uploaded image</strong></h2>
 
-    {% load static %}
-    <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% if image %}
+            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+        {% else %}
+            {% load static %}
+            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% endif %}
 
   </div>
 </div>
