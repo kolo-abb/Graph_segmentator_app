@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+from PIL.Image import Image
 
 
 def diff(image_arr, x1, y1, x2, y2):

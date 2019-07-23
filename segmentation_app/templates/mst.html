@@ -1,9 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="{% url 'upload_pic' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-    <p>
-        <input id="id_image" type="file" class="" name="image">
-    </p>
-    <input type="submit" value="Submit" />
-</form>
+<div class="row">
+  <div class="column">
+      <h2 style="text-align: center;">Minimal Spanning Tree</h2>
+      <h3 style="text-align: center;">Choose parameters</h3>
+
+       <form method="post" style="text-align: center;" action="{% url 'mst' %}">
+           {% csrf_token %}
+           <select name="Edges" size="2">
+            <option value=True selected="selected">8 Edges</option>
+            <option value=False>4 Edges</option>
+          </select>
+           <br>
+          Const:<br>
+          <input type="number" name="Const" value=3.0><br>
+          Minimal segment size:<br>
+          <input type="number" name="Min_size" value=200><br><br>
+          <input type="submit" value="Submit">
+          <input type="reset">
+        </form>
+
+
+
+  </div>
+
+  <div class="column">
+    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
+
+        {% if segmented_image %}
+            <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        {% endif %}
+        {% if counter %}
+            <p style="text-align: center;">Number of objects: {{ counter }}</p>
+        {% endif %}
+
+        <br>
+
+        {% if image %}
+            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+        {% else %}
+            {% load static %}
+            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% endif %}
+
+  </div>
+</div>
 {% endblock %}

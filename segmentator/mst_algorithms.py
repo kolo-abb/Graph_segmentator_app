@@ -77,7 +77,6 @@ def merge_small(forest, G, min_size):
 
 
 def count_objects(forest):
-    print(type(forest))
     return forest.num_sets
 
 

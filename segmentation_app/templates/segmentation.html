@@ -16,8 +16,9 @@
       <br>
 
       <h2 style="text-align: center;">Choose algorithm</h2>
-        <form style="text-align: center;" action="{% url 'run_algorithm' %}">
-          <select name="cars" size="5">
+        <form style="text-align: center;" method="post" action="{% url 'choose_alg' %}">
+            {% csrf_token %}
+          <select name="algos" size="5">
             <option value="mst">Minimal Spanning Tree</option>
             <option value="g_cut">Graph Cut</option>
           </select>

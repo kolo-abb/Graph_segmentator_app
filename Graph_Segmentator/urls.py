@@ -26,8 +26,7 @@ urlpatterns = [
     url(r'^segmentation/', views.segmentation, name='segmentation'),
     url(r'^tracking/', views.tracking, name='tracking'),
     url(r'^mst/', views.mst, name='mst'),
-    # url(r'^upload_pic/', views.upload_pic, name='upload_pic'),
-    url(r'^run_algorithm/', views.run_algorithm, name='run_algorithm'),
+    url(r'^choose_alg/', views.choose_alg, name='choose_alg'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
