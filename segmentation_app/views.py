@@ -12,12 +12,14 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from segmentation_app.forms import ImageUploadForm
 
 
+context = {}
+
+
 def home(request):
     return render(request, 'home.html')
 
 
 def segmentation(request):
-    context = {}
     if request.method == 'POST':
         uploaded_file = request.FILES['image']
         fs = FileSystemStorage()
@@ -33,25 +35,26 @@ def tracking(request):
 def mst(request):
     return render(request, 'home.html')
 
-
-@ensure_csrf_cookie
-def upload_pic(request):
-    if request.method == 'POST':
-        form = ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = Image.open(request.FILES['image'])
-            print(image)
-        return render(request, 'segmentation.html')
-    return render(request, 'segmentation.html')
+#
+# @ensure_csrf_cookie
+# def upload_pic(request):
+#     if request.method == 'POST':
+#         form = ImageUploadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             image = Image.open(request.FILES['image'])
+#             print(image)
+#         return render(request, 'segmentation.html')
+#     return render(request, 'segmentation.html')
 
 
 @ensure_csrf_cookie
 def run_algorithm(request):
-    if request.method == 'POST':
-        form = ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = Image.open(request.FILES['image'])
-            result= seg.mst_count_1const(image)
-            # return HttpResponse('object number: '+str(result))
-            return HttpResponse(request.FILES['image'])
-    return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+    # if request.method == 'POST':
+    #     form = ImageUploadForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         image = Image.open(request.FILES['image'])
+    #         result= seg.mst_count_1const(image)
+    #         # return HttpResponse('object number: '+str(result))
+    #         return HttpResponse(request.FILES['image'])
+    # return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+    return render(request, 'segmentation.html', context)

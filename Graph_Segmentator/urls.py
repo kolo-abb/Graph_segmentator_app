@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^segmentation/', views.segmentation, name='segmentation'),
     url(r'^tracking/', views.tracking, name='tracking'),
     url(r'^mst/', views.mst, name='mst'),
-    url(r'^upload_pic/', views.upload_pic, name='upload_pic'),
+    # url(r'^upload_pic/', views.upload_pic, name='upload_pic'),
     url(r'^run_algorithm/', views.run_algorithm, name='run_algorithm'),
 ]
 
