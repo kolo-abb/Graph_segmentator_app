@@ -14,11 +14,12 @@ class Node:
         self.size = size
 
 def prepare_graph(img, edges_8=True):
+    if(img.width>=500) | (img.height>=500):
+        img = img.resize((500,500))
     image_arr = np.array(img, dtype='int16')
     G = nx.Graph()
     width=image_arr.shape[0]
     height=image_arr.shape[1]
-
     for i in range(width):
         for j in range(height):
             G.add_node((i,j))

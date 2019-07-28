@@ -39,16 +39,27 @@ def get_sorted_edges(G):
     return sorted(G.edges(data=True), key=lambda e: e[2]['weight'])
 
 
-def threshold_blood_cells_1(size, const):
-    return (const * 1.0 * math.sqrt(size))
+def threshold_mst_1(size, const):
+    return const * 1.0 * math.sqrt(size)
 
 
-def mst_segmentation_1const(G, threshold=threshold_blood_cells_1, const=3.0):
+def threshold_mst_2(size, const):
+    return (const * 1.0) / math.sqrt(size)
+
+
+def threshold_mst_3(const):
+    return const
+
+
+def mst_segmentation_1const(G, threshold=threshold_mst_1, const=3.0):
     forest = Forest(G.width * G.height)
 
     vertex_id = lambda x, y: y * G.width + x
 
-    Threshold = [threshold(1, const) for _ in range(G.width * G.height)]
+    if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
+        Threshold = [threshold(1, const) for _ in range(G.width * G.height)]
+    elif threshold == threshold_mst_3:
+        Threshold = [threshold(const) for _ in range(G.width * G.height)]
 
     for e in get_sorted_edges(G):
         parent_a = forest.find(vertex_id(e[0][0], e[0][1]))
@@ -59,7 +70,8 @@ def mst_segmentation_1const(G, threshold=threshold_blood_cells_1, const=3.0):
         if parent_a != parent_b and a_condition and b_condition:
             forest.merge(parent_a, parent_b)
             a = forest.find(parent_a)
-            Threshold[a] = e[2]['weight'] + threshold(forest.nodes[a].size, const)
+            if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
+                Threshold[a] = e[2]['weight'] + threshold(forest.nodes[a].size, const)
 
     return forest
 

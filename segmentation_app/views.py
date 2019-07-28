@@ -9,6 +9,8 @@ from segmentator import main_api as seg
 # Create your views here.
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+from segmentator.mst_algorithms import threshold_mst_1, threshold_mst_2, threshold_mst_3
+
 context = {}
 
 
@@ -38,9 +40,21 @@ def mst(request):
         edges8=request.POST.get("Edges")
         const=float(request.POST.get("Const"))
         min_size=int(request.POST.get("Min_size"))
-
-        result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+        threshold=int(request.POST.get("Threshold"))
+        if threshold==1:
+            result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+                                            threshold=threshold_mst_1,
                                             const=const,min_size=min_size)
+        elif threshold==2:
+            result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+                                            threshold=threshold_mst_2,
+                                            const=const,min_size=min_size)
+        elif threshold==3:
+            result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+                                            threshold=threshold_mst_3,
+                                            const=const,min_size=min_size)
+        else:
+            print("Problem");
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
