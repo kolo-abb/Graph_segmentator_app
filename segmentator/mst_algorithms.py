@@ -22,15 +22,12 @@ class Forest:
         return temp
 
     def merge(self, a, b):
-        if self.nodes[a].rank > self.nodes[b].rank:
+        if self.nodes[a].size > self.nodes[b].size:
             self.nodes[b].parent = a
             self.nodes[a].size = self.nodes[a].size + self.nodes[b].size
         else:
             self.nodes[a].parent = b
             self.nodes[b].size = self.nodes[b].size + self.nodes[a].size
-
-            if self.nodes[a].rank == self.nodes[b].rank:
-                self.nodes[b].rank = self.nodes[b].rank + 1
 
         self.num_sets = self.num_sets - 1
 
@@ -103,3 +100,18 @@ def get_segmented_image(forest,G):
             im[x, y] = colors[comp]
 
     return img.transpose(Image.ROTATE_270).transpose(Image.FLIP_LEFT_RIGHT)
+
+# make dictionary with lists parent:[list of nodes]
+def mst_segmentation_1const_additional(G, forest, threshold, const,max_size):
+    lst=[]
+    for a in forest.nodes:
+        lst.append(a.parent)
+    vertex_id = lambda x, y: y * G.width + x
+    for e in get_sorted_edges(G):
+        a = forest.find(vertex_id(e[0][0],e[0][1]))
+        b = forest.find(vertex_id(e[1][0],e[1][1]))
+
+        if a != b and (forest.size_of(a) > max_size or forest.size_of(b) > max_size):
+            forest.merge(a, b)
+
+    return forest

@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^segmentation/', views.segmentation, name='segmentation'),
     url(r'^tracking/', views.tracking, name='tracking'),
     url(r'^mst/', views.mst, name='mst'),
+    url(r'^mst_additional/', views.mst_additional, name='mst_additional'),
     url(r'^choose_alg/', views.choose_alg, name='choose_alg'),
 ]
 

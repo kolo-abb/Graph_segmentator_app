@@ -34,12 +34,19 @@
             <h3 style="text-align: center;"><strong>Additional segmentation for too large objects</strong></h3>
             <h3 style="text-align: center;">Choose parameters:</h3>
 
-           <form method="post" style="text-align: center;" action="{% url 'mst' %}">
+           <form method="post" style="text-align: center;" action="{% url 'mst_additional' %}">
                {% csrf_token %}
-               Maximal segment size(excluding background):<br>
+               Threshold:<br>
+               <select name="Threshold" size="3">
+                   <option value=1 selected="selected">edge weight + const * 1.0 * sqrt(size of a segment)</option>
+                   <option value=2 >edge weight + const * 1.0 / sqrt(size of a segment)</option>
+                   <option value=3 >const</option>
+              </select>
+               <br>
+               Mninimal segment size(excluding background):<br>
               <input type="number" name="Min_size" value=200><br>
                Maximal segment size(excluding background):<br>
-              <input type="number" name="Min_size" value=200><br>
+              <input type="number" name="Max_size" value=200><br>
                Const:<br>
               <input type="number" name="Const" value=3.0><br><br>
               <input type="submit" value="Submit">
