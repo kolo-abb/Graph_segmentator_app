@@ -12,6 +12,7 @@ class Node:
         self.parent = parent
         self.rank = rank
         self.size = size
+        self.nr = parent
 
 def prepare_graph(img, edges_8=True):
     if(img.width>=500) | (img.height>=500):

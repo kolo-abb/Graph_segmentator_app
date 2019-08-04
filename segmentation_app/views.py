@@ -68,6 +68,8 @@ def mst_additional(request):
     if request.method == 'POST':
 
         const=float(request.POST.get("Const"))
+        print(const)
+
         min_size=int(request.POST.get("Min_size"))
         threshold=int(request.POST.get("Threshold"))
         max_size=int(request.POST.get("Max_size"))

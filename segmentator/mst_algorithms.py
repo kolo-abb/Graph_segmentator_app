@@ -101,17 +101,68 @@ def get_segmented_image(forest,G):
 
     return img.transpose(Image.ROTATE_270).transpose(Image.FLIP_LEFT_RIGHT)
 
-# make dictionary with lists parent:[list of nodes]
-def mst_segmentation_1const_additional(G, forest, threshold, const,max_size):
-    lst=[]
-    for a in forest.nodes:
-        lst.append(a.parent)
-    vertex_id = lambda x, y: y * G.width + x
-    for e in get_sorted_edges(G):
-        a = forest.find(vertex_id(e[0][0],e[0][1]))
-        b = forest.find(vertex_id(e[1][0],e[1][1]))
 
-        if a != b and (forest.size_of(a) > max_size or forest.size_of(b) > max_size):
-            forest.merge(a, b)
+# change algforithms
+def mst_segmentation_1const_additional(G, forest, threshold, const, max_size):
+    vertex_pos = lambda x: (x.nr-int(x.nr/G.width)*G.width,int(x.nr/G.width))
+    vertex_id = lambda x, y: y * G.width + x
+    dict={}
+    for a in forest.nodes:
+        if a.parent in dict.keys():
+            dict[a.parent].append(a)
+        else:
+            dict[a.parent]=[a,forest.nodes[a.parent]]
+    max=0
+    max_x=None
+    for x in dict:
+        if len(dict[x])>max_size:
+            print(len(dict[x]))
+            if len(dict[x])>max:
+                if max>0:
+                    lst=[]
+                    for a in dict[max_x]:
+                        lst.append(vertex_pos(a))
+                    K=G.subgraph(lst)
+                    if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
+                        Threshold = [threshold(1, const) for _ in range(G.width * G.height)]
+                    elif threshold == threshold_mst_3:
+                        Threshold = [threshold(const) for _ in range(G.width * G.height)]
+
+                    for e in get_sorted_edges(K):
+                        parent_a = forest.find(vertex_id(e[0][0], e[0][1]))
+                        parent_b = forest.find(vertex_id(e[1][0], e[1][1]))
+                        a_condition = e[2]['weight'] <= Threshold[parent_a]
+                        b_condition = e[2]['weight'] <= Threshold[parent_b]
+
+                        if parent_a != parent_b and a_condition and b_condition:
+                            forest.merge(parent_a, parent_b)
+                            a = forest.find(parent_a)
+                            if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
+                                Threshold[a] = e[2]['weight'] + threshold(forest.nodes[a].size, const)
+                max=len(dict[x])
+                max_x=x
+            else:
+                lst=[]
+                for a in dict[x]:
+                    lst.append(vertex_pos(a))
+                K=G.subgraph(lst)
+                if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
+                    Threshold = [threshold(1, const) for _ in range(G.width * G.height)]
+                elif threshold == threshold_mst_3:
+                    Threshold = [threshold(const) for _ in range(G.width * G.height)]
+
+                for e in get_sorted_edges(K):
+                    parent_a = forest.find(vertex_id(e[0][0], e[0][1]))
+                    parent_b = forest.find(vertex_id(e[1][0], e[1][1]))
+                    a_condition = e[2]['weight'] <= Threshold[parent_a]
+                    b_condition = e[2]['weight'] <= Threshold[parent_b]
+
+                    if parent_a != parent_b and a_condition and b_condition:
+                        forest.merge(parent_a, parent_b)
+                        a = forest.find(parent_a)
+                        if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
+                            Threshold[a] = e[2]['weight'] + threshold(forest.nodes[a].size, const)
 
     return forest
+
+
