@@ -15,6 +15,7 @@ class Forest:
 
     def find(self, n):
         temp = n
+        print(type(temp))
         while temp != self.nodes[temp].parent:
             temp = self.nodes[temp].parent
 
@@ -119,9 +120,13 @@ def mst_segmentation_1const_additional(G, forest, threshold, const, max_size):
             print(len(dict[x]))
             if len(dict[x])>max:
                 if max>0:
+
                     lst=[]
                     for a in dict[max_x]:
                         lst.append(vertex_pos(a))
+                        a.parent=a.nr
+                        forest.num_sets+=1
+                    forest.num_sets-=1
                     K=G.subgraph(lst)
                     if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
                         Threshold = [threshold(1, const) for _ in range(G.width * G.height)]
@@ -139,12 +144,17 @@ def mst_segmentation_1const_additional(G, forest, threshold, const, max_size):
                             a = forest.find(parent_a)
                             if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
                                 Threshold[a] = e[2]['weight'] + threshold(forest.nodes[a].size, const)
+
                 max=len(dict[x])
                 max_x=x
             else:
+
                 lst=[]
                 for a in dict[x]:
                     lst.append(vertex_pos(a))
+                    a.parent=a.nr
+                    forest.num_sets+=1
+                forest.num_sets-=1
                 K=G.subgraph(lst)
                 if (threshold == threshold_mst_1) | (threshold == threshold_mst_2):
                     Threshold = [threshold(1, const) for _ in range(G.width * G.height)]
