@@ -9,7 +9,7 @@ Web application for image segmentation and object tracking, using graph-based me
 
 	  3.Prepare all static resources - run: python manage.py collectstatic
 
-	  4.Start application - run: python manage.py runserver
+	  4.Start application as an administrator - run: sudo python manage.py runserver
 
 	  5.Copy given adress to your web browser
 
