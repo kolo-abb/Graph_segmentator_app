@@ -22,7 +22,6 @@ def home(request):
 def segmentation(request):
     if request.method == 'POST':
         context.clear()
-        #context={}
         uploaded_file = request.FILES['image']
         fs = FileSystemStorage()
         name = fs.save(uploaded_file.name, uploaded_file)
@@ -34,10 +33,10 @@ def tracking(request):
     return render(request, 'home.html')
 
 
-
 def mst(request):
     print(context)
     if request.method == 'POST':
+
         edges8=request.POST.get("Edges")
         const=float(request.POST.get("Const"))
         min_size=int(request.POST.get("Min_size"))
@@ -59,8 +58,41 @@ def mst(request):
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
+        context['forest'] = result[2]
+        context['graph'] = result[3]
     return render(request, 'mst.html', context)
 
+
+def mst_additional(request):
+    print(context)
+    if request.method == 'POST':
+
+        const=float(request.POST.get("Const"))
+        print(const)
+
+        min_size=int(request.POST.get("Min_size"))
+        threshold=int(request.POST.get("Threshold"))
+        max_size=int(request.POST.get("Max_size"))
+        forest=context['forest']
+        G=context['graph']
+        if threshold==1:
+            result= seg.mst_1const_additional(G, forest,
+                                            threshold=threshold_mst_1,
+                                            const=const,min_size=min_size,max_size=max_size)
+        elif threshold==2:
+            result= seg.mst_1const_additional(G, forest,
+                                            threshold=threshold_mst_2,
+                                            const=const,min_size=min_size,max_size=max_size)
+        elif threshold==3:
+            result= seg.mst_1const_additional(G, forest,
+                                            threshold=threshold_mst_3,
+                                            const=const,min_size=min_size,max_size=max_size)
+        else:
+            print("Problem");
+        result[0].save('static/media/temporary.png')
+        context['segmented_image'] = "/static/media/temporary.png"
+        context['counter'] = result[1]
+    return render(request, 'mst.html', context)
 
 def two_cc(request):
     print(context)
@@ -86,20 +118,16 @@ def two_cc(request):
         context['counter'] = result[1]
     return render(request, 'two_cc.html', context)
 
-
 @ensure_csrf_cookie
 def choose_alg(request):
     if request.method == 'POST':
         name = request.POST.get("algos")
         if(name == "mst"):
             return render(request, 'mst.html', context)
-        if(name == "two_cc"):
-            return render(request, 'two_cc.html', context)
         else:
             return HttpResponseForbidden('Something is wrong, check if you filled all required positions!2')
 
     return HttpResponseForbidden('Something is wrong, check if you filled all required positions!1')
-
 
 
 
