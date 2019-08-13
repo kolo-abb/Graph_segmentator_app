@@ -19,7 +19,8 @@
         <form style="text-align: center;" method="post" action="{% url 'choose_alg' %}">
             {% csrf_token %}
           <select name="algos" size="5">
-            <option value="mst">Minimal Spanning Tree</option>
+              <option value="mst">Minimal Spanning Tree</option>
+              <option value="two_cc">Two-connected</option>
           </select>
           <br><br>
           <input type="submit" value="Submit">

@@ -104,7 +104,7 @@ def two_cc(request):
         if threshold==1:
             const=None
         if channel==1:
-            result = seg.two_connected_components(Image.open(context['image']), fill_in=fill_in, thresh=const)
+            result = seg.two_connected_components(Image.open(context['image']),channel="all", fill_in=fill_in, thresh=const)
         elif channel==2:
             result= seg.two_connected_components(Image.open(context['image']),channel="red",  fill_in=fill_in, thresh=const)
         elif channel==3:
@@ -124,6 +124,8 @@ def choose_alg(request):
         name = request.POST.get("algos")
         if(name == "mst"):
             return render(request, 'mst.html', context)
+        if(name == "two_cc"):
+            return render(request, 'two_cc.html', context)
         else:
             return HttpResponseForbidden('Something is wrong, check if you filled all required positions!2')
 
