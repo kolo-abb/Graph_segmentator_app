@@ -1,3 +1,5 @@
+import datetime
+
 import numpy as np
 import networkx as nx
 from PIL.Image import Image
@@ -15,15 +17,18 @@ class Node:
         self.nr = parent
 
 def prepare_graph(img, edges_8=True):
+    print('inside prepare_graph'+str(datetime.datetime.now()))
     if(img.width>=500) | (img.height>=500):
         img = img.resize((500,500))
     image_arr = np.array(img, dtype='int16')
     G = nx.Graph()
     width=image_arr.shape[0]
     height=image_arr.shape[1]
+    print('inside prepare_graph'+str(datetime.datetime.now()))
     for i in range(width):
         for j in range(height):
             G.add_node((i,j))
+    print('inside prepare_graph'+str(datetime.datetime.now()))
 
     for y in range(height):
             for x in range(width):

@@ -1,3 +1,4 @@
+import datetime
 from random import random
 
 import math
@@ -15,7 +16,6 @@ class Forest:
 
     def find(self, n):
         temp = n
-        print(type(temp))
         while temp != self.nodes[temp].parent:
             temp = self.nodes[temp].parent
 
@@ -76,7 +76,10 @@ def mst_segmentation_1const(G, threshold=threshold_mst_1, const=3.0):
 
 def merge_small(forest, G, min_size):
     vertex_id = lambda x, y: y * G.width + x
-    for e in get_sorted_edges(G):
+    print('inside merge_small'+str(datetime.datetime.now()))
+    E=get_sorted_edges(G)
+    print('inside merge_small'+str(datetime.datetime.now()))
+    for e in E:
         a = forest.find(vertex_id(e[0][0],e[0][1]))
         b = forest.find(vertex_id(e[1][0],e[1][1]))
 
@@ -117,7 +120,6 @@ def mst_segmentation_1const_additional(G, forest, threshold, const, max_size):
     max_x=None
     for x in dict:
         if len(dict[x])>max_size:
-            print(len(dict[x]))
             if len(dict[x])>max:
                 if max>0:
 
