@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^mst/', views.mst, name='mst'),
     url(r'^mst_additional/', views.mst_additional, name='mst_additional'),
     url(r'^two_cc/', views.two_cc, name='two_cc'),
+    url(r'^ngc/', views.ngc, name='ngc'),
     url(r'^choose_alg/', views.choose_alg, name='choose_alg'),
 ]
 
