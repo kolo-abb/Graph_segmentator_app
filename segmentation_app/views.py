@@ -118,6 +118,23 @@ def two_cc(request):
         context['counter'] = result[1]
     return render(request, 'two_cc.html', context)
 
+def ngc(request):
+    print(context)
+    if request.method == 'POST':
+        Decision=int(request.POST.get("Algorithm_type"))
+        I=int(request.POST.get("Intensivity"))
+        X=int(request.POST.get("Distance"))
+        if Decision == 1:
+            result = seg.basic_ngc(context['image'], I, X)
+        elif Decision == 2:
+            result = seg.advanced_ngc(context['image'], I, X)
+        else:
+            print("Problem");
+        result[0].save('static/media/temporary.png')
+        context['segmented_image'] = "/static/media/temporary.png"
+        context['counter'] = result[1]
+    return render(request, 'ngc.html', context)
+
 @ensure_csrf_cookie
 def choose_alg(request):
     if request.method == 'POST':
@@ -126,6 +143,8 @@ def choose_alg(request):
             return render(request, 'mst.html', context)
         if(name == "two_cc"):
             return render(request, 'two_cc.html', context)
+        if(name == "ngc"):
+            return render(request, 'ngc.html', context)
         else:
             return HttpResponseForbidden('Something is wrong, check if you filled all required positions!2')
 
