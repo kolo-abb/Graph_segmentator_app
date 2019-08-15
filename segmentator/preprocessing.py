@@ -1,7 +1,7 @@
 import numpy as np
 import networkx as nx
 from PIL.Image import Image
-
+import math
 
 def diff(image_arr, x1, y1, x2, y2):
     _out = np.sum((image_arr[x1, y1] - image_arr[x2, y2]) ** 2)
@@ -87,3 +87,66 @@ def preparing_image(image,shape):
     enhanced_image = ImageEnhance.Sharpness(enhanced_image).enhance(0.95) 
     image_arr = np.array(enhanced_image, dtype=np.uint8)
     return image_arr
+
+# NGC processes
+
+def norm(x1, y1, x2, y2):
+    norm = math.sqrt( (x1-x2) ** 2 + (y1-y2) ** 2 )
+    return norm
+
+def ngc_set_capacity(image_arr, x1, y1, x2, y2, I, X):
+    capacity = np.exp(-(abs((image_arr[x1][y1] - image_arr[x2][y2])/I + norm(x1, y1, x2, y2)/X)))
+    return capacity
+
+def find_median(sorted_list):
+    
+    indices = []
+
+    list_size = len(sorted_list)
+    median = 0
+
+    if list_size % 2 == 0:
+        indices.append(int(list_size / 2) - 1)  # -1 because index starts from 0
+        indices.append(int(list_size / 2))
+
+        median = (sorted_list[indices[0]] + sorted_list[indices[1]]) / 2
+        pass
+    else:
+        indices.append(int(list_size / 2))
+
+        median = sorted_list[indices[0]]
+        pass
+
+    return median, indices
+
+def ngc_open_image(img):
+    image = Image.open(img).convert('L')
+    return image
+
+def ngc_get_image_arr(image):
+    image_arr = np.array(image, dtype='int64')
+    return image_arr
+
+def create_cut_matrix(image_arr, I, X):
+    M = np.zeros((256,256))
+    width = image_arr.shape[0]
+    height = image_arr.shape[1]
+    for i in range(width):
+        for j in range(height):
+            if i > 0:
+                capacity = ngc_set_capacity(image_arr, i, j, i-1, j, I, X)
+                M[image_arr[i-1][j]][image_arr[i][j]] += capacity
+                M[image_arr[i][j]][image_arr[i-1][j]] += capacity
+                if j > 0:
+                    capacity = ngc_set_capacity(image_arr, i-1, j-1, i, j, I, X)
+                    M[image_arr[i-1][j-1]][image_arr[i][j]] += capacity
+                    M[image_arr[i][j]][image_arr[i-1][j-1]] += capacity
+                if j < width - 1:
+                    capacity = ngc_set_capacity(image_arr, i-1, j+1, i, j, I, X)
+                    M[image_arr[i-1][j+1]][image_arr[i][j]] += capacity
+                    M[image_arr[i][j]][image_arr[i-1][j+1]] += capacity
+            if j > 0:
+                capacity = ngc_set_capacity(image_arr, i, j-1, i, j, I, X)
+                M[image_arr[i][j-1]][image_arr[i][j]] += capacity
+                M[image_arr[i][j]][image_arr[i][j-1]] += capacity
+    return M
