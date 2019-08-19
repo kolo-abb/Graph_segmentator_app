@@ -1,17 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
-    <h2 style="text-align: center;"><a href="{% url 'segmentation' %}"><span style="color: #333399;"><strong>Segmentation and Object Counting</strong></span></a></h2>
-    {% load static %}
-    <p style="text-align: center;"><img src="{% static 'images/dump-truck-segmented-1024x576.png' %}" alt="" width="600" height="250" /></p>
 
-    <br>
-    <br>
+<div class="square">
+            <a href="{% url 'segmentation' %}" class="tilelink">
+                <div class="tile1">
+                    <br />Segmentation and object counting
+                </div>
+            </a>
 
-    <h2 style="text-align: center;"><a href="{% url 'tracking' %}"><span style="color: #333399;"><strong>Object Tracking</strong></span></a></h2>
+			<a href="{% url 'tracking' %}" class="tilelinkhtml5">
+				<div class="tile2">
+					<br />Object tracking
+				</div>
+			</a>
+			<div style="clear:both;"></div>
 
-    {% load static %}
-    <p style="text-align: center;"><img src="{% static 'images/GAN-birds-tracking.png' %}" alt="" width="600" height="250" /></p>
+			<a href="cv-programista-php-javascript" class="tilelink">
+                <div class="tile3">
+				    <br />Saved analysis
+			    </div>
+            </a>
 
+			<div class="tile4">
+				<p>
+                    About project:
+
+                </p>
+			</div>
+			<div style="clear:both;"></div>
 </div>
 {% endblock %}

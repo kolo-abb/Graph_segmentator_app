@@ -1,16 +1,30 @@
 
 body {
-  background-color: linen;
+  background: url('/static/images/background_graph.png');
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: center;
+
+}
+
+img {
+    max-width: 100%;
+    max-height: 500px;
 }
 
 h1 {
-  color: red;
+  color: white;
   text-align: center;
+  font-size: 80px;
 }
 
 .column {
+  background-color: #007bff;
   float: left;
-  width: 50%;
+  width: 40%;
+  margin: 5%;
+  bottom:10%
+  object-fit: fill;
 }
 
 /* Clear floats after the columns */
@@ -18,4 +32,119 @@ h1 {
   content: "";
   display: table;
   clear: both;
+}
+
+.square
+{
+	width: 70%;
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    top: 20%;
+}
+
+
+.tile1
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/dump-truck-segmented-1024x576.png');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: #003366;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+
+}
+
+.tile1:hover
+{
+	box-shadow: 15px 15px;
+}
+
+.tile2
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/GAN-birds-tracking.png');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: #003366;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+}
+
+.tile2:hover
+{
+	box-shadow: 15px 15px;
+}
+
+.tile3
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/ext.jpeg');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: #003366;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+
+}
+
+.tile3:hover
+{
+	box-shadow: 15px 15px;
+}
+
+.tile3
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: #3095d3;
+	float: left;
+	text-align: center;
+	background: url('/static/images/ext.jpeg');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: #003366;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+
+}
+
+.tile4
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: #ffcc99;
+	float: left;
+	text-align: left;
+    color: #003366;
+    font-size: 16px;
+    font-family: "Times New Roman";
+    font-weight: 300;
+
 }
