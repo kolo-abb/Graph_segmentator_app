@@ -135,16 +135,27 @@ def ngc(request):
         context['counter'] = result[1]
     return render(request, 'ngc.html', context)
 
+def interactive(request):
+    print(context)
+    if request.method == 'POST':
+        result = seg.interactive(Image.open(context['image']))
+        result[0].save('static/media/temporary.png')
+        context['segmented_image'] = "/static/media/temporary.png"
+        context['counter'] = result[1]
+    return render(request, 'interactive.html', context) 
+
 @ensure_csrf_cookie
 def choose_alg(request):
     if request.method == 'POST':
         name = request.POST.get("algos")
-        if(name == "mst"):
+        if name == "mst":
             return render(request, 'mst.html', context)
-        if(name == "two_cc"):
+        elif name == "two_cc":
             return render(request, 'two_cc.html', context)
-        if(name == "ngc"):
+        elif name == "ngc":
             return render(request, 'ngc.html', context)
+        if name == "interactive":
+            return render(request, 'interactive.html', context)
         else:
             return HttpResponseForbidden('Something is wrong, check if you filled all required positions!2')
 
