@@ -7,6 +7,7 @@ from segmentator.preprocessing import prepare_graph, define_nodes, abs_value, de
 from segmentator.preprocessing import create_cut_matrix, norm, ngc_set_capacity, find_median
 from segmentator.ngc_algorithms import ngc_open_image, ngc_get_image_arr, ngc_get_treshold, ngc_threshold_image, \
      ngc_colour_binary_image, ngc_count_objects, ngc_find_outliners, ngc_remove_banned_objects, ngc_segmented_image
+from segmentator.interactive_algorithm import *
 
 def mst_1const(img, edges_8=True, threshold=threshold_mst_1, const=3.0, min_size=200):
     print(datetime.datetime.now())
@@ -66,3 +67,11 @@ def advanced_ngc(img, I, X):
     counter = ngc_count_objects(result)
     
     return ngc_segmented_image(result), counter
+
+
+def interactive(original_image): #, foreground_sample, background_sample):
+
+    segmented_image = image_processing_pipeline(np.array(original_image)) #, foreground_sample, background_sample)
+    counter = 0
+
+    return segmented_image, counter
