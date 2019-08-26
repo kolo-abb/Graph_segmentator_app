@@ -63,6 +63,7 @@ h1 {
     font-size: 28px;
     font-family: "Times New Roman";
     font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 
 }
 
@@ -87,6 +88,7 @@ h1 {
     font-size: 28px;
     font-family: "Times New Roman";
     font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .tile2:hover
@@ -110,7 +112,7 @@ h1 {
     font-size: 28px;
     font-family: "Times New Roman";
     font-weight: 600;
-
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .tile3:hover
@@ -123,14 +125,23 @@ h1 {
 	margin: 1%;
 	width: 48%;
 	height: 250px;
-	background-color: #ffcc99;
+	background-color: black;
 	float: left;
-	text-align: left;
-    color: #003366;
-    font-size: 16px;
+	text-align: center;
+	background: url('/static/images/algos.jpeg');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-size: 28px;
     font-family: "Times New Roman";
-    font-weight: 300;
+    font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 
 }
 
 
+.tile4:hover
+{
+	box-shadow: 15px 15px black;
+}
