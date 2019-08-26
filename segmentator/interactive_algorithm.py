@@ -23,7 +23,7 @@ def get_distributions(): # foreground, background):
     # mu1, std1 = norm.fit(foreground_data)
     # mu2, std2 = norm.fit(background_data)
     
-    return 128, 0.2, 192, 0.2 # mu1, std1, mu2, std2
+    return 200.18524283935244, 21.21812517107485, 247.72227399813607, 1.1573492431779502 # mu1, std1, mu2, std2
 
 def create_graph(arr, mu1, std1, mu2, std2):
     G = nx.DiGraph()
@@ -58,6 +58,7 @@ def create_graph(arr, mu1, std1, mu2, std2):
 
 def get_bitmap(R, threshold, dimx, dimy):
     bitmap = np.zeros((dimx, dimy))
+
     for i in range(dimx):
         for j in range(dimy):
             if R['s'][(i,j)]['flow'] > threshold:
@@ -89,7 +90,6 @@ def image_processing_pipeline(image): #, foreground_sample, background_sample):
                 G = create_graph(arr, mu1, std1, mu2, std2)
                 
                 R = edmonds_karp(G, 's', 't')
-                
                 print('Current flow:', R.graph['flow_value'], end=' ')
                 
                 dimx = w_coords[w+1] - w_coords[w]
@@ -102,4 +102,4 @@ def image_processing_pipeline(image): #, foreground_sample, background_sample):
                 
                 print('Slice {}:{},{}:{},{} done!'.format(w_coords[w], w_coords[w+1], h_coords[h], h_coords[h+1], d))
                 
-    return Image.fromarray(result_image, 'RGB')
+    return Image.fromarray(result_image.transpose, 'RGB')
