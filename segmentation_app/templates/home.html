@@ -4,29 +4,28 @@
 <div class="square">
             <a href="{% url 'segmentation' %}" class="tilelink">
                 <div class="tile1">
-                    <br />Segmentation and object counting
+                    <br /><br /><br />Segmentation and object counting
                 </div>
             </a>
 
 			<a href="{% url 'tracking' %}" class="tilelinkhtml5">
 				<div class="tile2">
-					<br />Object tracking
+					<br /><br /><br />Object tracking
 				</div>
 			</a>
 			<div style="clear:both;"></div>
 
-			<a href="cv-programista-php-javascript" class="tilelink">
+			<a href="{% url 'tracking' %}" class="tilelink">
                 <div class="tile3">
-				    <br />Saved analysis
+				    <br /><br /><br />Saved analysis
 			    </div>
             </a>
 
-			<div class="tile4">
-				<p>
-                    About project:
-
-                </p>
-			</div>
+			<a href="{% url 'tracking' %}" class="tilelink">
+				<div class="tile4">
+					<br /><br /><br />Algorithms descriptions
+				</div>
+			</a>
 			<div style="clear:both;"></div>
 </div>
 {% endblock %}
