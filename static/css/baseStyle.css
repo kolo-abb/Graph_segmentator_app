@@ -1,10 +1,10 @@
 
 body {
   background: url('/static/images/background_graph.png');
-  background-repeat: repeat;
-  background-size: cover;
-  background-position: center;
-
+  background-size:cover;
+  height: 100%;
+  margin: 0;
+  bottom: 0;
 }
 
 img {
@@ -16,6 +16,34 @@ h1 {
   color: white;
   text-align: center;
   font-size: 80px;
+}
+
+h2 {
+  color: white;
+  text-align: center;
+  font-size: 45px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+h3 {
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+h4 {
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+p {
+    color: white;
+  text-align: center;
+  font-size: 14px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .column {
@@ -44,6 +72,9 @@ h1 {
     left: 15%;
     right: 15%;
     top: 20%;
+    height: 100%;
+    margin: 0;
+    bottom: 0;
 }
 
 
@@ -144,4 +175,18 @@ h1 {
 .tile4:hover
 {
 	box-shadow: 15px 15px black;
+}
+
+.page
+{
+  height: 100%;
+  margin: 0;
+  bottom: 0;
+}
+
+page
+{
+  height: 100%;
+  margin: 0;
+  bottom: 0;
 }

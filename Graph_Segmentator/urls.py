@@ -31,6 +31,11 @@ urlpatterns = [
     url(r'^ngc/', views.ngc, name='ngc'),
     url(r'^interactive/', views.interactive, name='interactive'),
     url(r'^choose_alg/', views.choose_alg, name='choose_alg'),
+    url(r'^algorithms_desc/', views.algorithms_desc, name='algorithms_desc'),
+    url(r'^mst_desc/', views.mst_desc, name='mst_desc'),
+    url(r'^ngc_desc/', views.ngc_desc, name='ngc_desc'),
+    url(r'^two_cc_desc/', views.two_cc_desc, name='two_cc_desc'),
+    url(r'^interactive_desc/', views.interactive_desc, name='interactive_desc'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
