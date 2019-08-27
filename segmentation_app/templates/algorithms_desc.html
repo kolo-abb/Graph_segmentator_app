@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+    <h2>Segmentation</h2>
+    <a href="{% url 'mst_desc' %}" class="tilelink">
+        <h3>Minimal Spinning Tree</h3>
+    </a>
+    <a href="{% url 'ngc_desc' %}" class="tilelink">
+        <h3>Normalized Graph Cuts</h3>
+    </a>
+    <a href="{% url 'two_cc_desc' %}" class="tilelink">
+        <h3>Two-Connected Subgraphs</h3>
+    </a>
+    <a href="{% url 'interactive_desc' %}" class="tilelink">
+        <h3>Interactive Segmentation</h3>
+    </a>
+    </br>
+    <h2>Object Tracking</h2>
+
+{% endblock %}
+</html>

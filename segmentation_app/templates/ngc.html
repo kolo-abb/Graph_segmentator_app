@@ -1,8 +1,12 @@
+<!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
 <div class="row">
   <div class="column">
       <h2 style="text-align: center;"><strong>Normalized Graph Cuts</strong></h2>
+       <a href="{% url 'ngc_desc' %}" class="tilelink">
+        <h4>Description</h4>
+      </a>
       <h3 style="text-align: center;">Choose parameters:</h3>
 
        <form method="post" style="text-align: center;" action="{% url 'ngc' %}">
@@ -46,3 +50,4 @@
   </div>
 </div>
 {% endblock %}
+</html>

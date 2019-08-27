@@ -162,4 +162,23 @@ def choose_alg(request):
     return HttpResponseForbidden('Something is wrong, check if you filled all required positions!1')
 
 
+def algorithms_desc(request):
+    return render(request, 'algorithms_desc.html')
+
+
+def mst_desc(request):
+    return render(request, 'mst_desc.html')
+
+
+def ngc_desc(request):
+    return render(request, 'ngc_desc.html')
+
+
+def two_cc_desc(request):
+    return render(request, 'two_cc_desc.html')
+
+
+def interactive_desc(request):
+    return render(request, 'interactive_desc.html')
+
 
