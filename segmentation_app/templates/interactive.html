@@ -24,6 +24,20 @@
           <input type="number" name="Const" value=3.0><br>
           Minimal segment size:<br>
           <input type="number" name="Min_size" value=200><br><br> -->
+          
+          <form style="text-align: center;"  method="post" enctype="multipart/form-data">{% csrf_token %}
+            <p>
+                {% csrf_token %}
+                <input id="id_image" type="file" class="" name="foreground">
+            </p>
+                <input type="submit" value="Submit" /> <!-- przy submitach cos sie wali -->
+            <p>
+                {% csrf_token %}
+                <input id="id_image" type="file" class="" name="background">
+            </p>
+                <input type="submit" value="Submit" />
+          </form>
+          
           <input type="submit" value="Submit">
           <input type="reset">
         </form>

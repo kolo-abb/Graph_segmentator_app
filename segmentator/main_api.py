@@ -69,9 +69,9 @@ def advanced_ngc(img, I, X):
     return ngc_segmented_image(result), counter
 
 
-def interactive(original_image): #, foreground_sample, background_sample):
+def interactive(original_image, foreground, background):
 
-    segmented_image = image_processing_pipeline(np.array(original_image)) #, foreground_sample, background_sample)
+    segmented_image = image_processing_pipeline(np.array(original_image), np.array(foreground), np.array(background_sample))
     counter = 0
 
     return segmented_image, counter

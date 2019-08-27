@@ -138,8 +138,8 @@ def ngc(request):
 def interactive(request):
     print(context)
     if request.method == 'POST':
-        result = seg.interactive(Image.open(context['image']))
-        result[0].save('static/media/temporary.png')
+        result = seg.interactive(Image.open(context['image'], context['foreground'], context['background']))
+        Image.fromarray(result[0]).save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
     return render(request, 'interactive.html', context) 
