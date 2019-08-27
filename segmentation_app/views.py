@@ -63,6 +63,12 @@ def mst(request):
     return render(request, 'mst.html', context)
 
 
+def save_mst(request):
+
+    save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_size,threshold2=None,
+             const2=None,min_size2=None,max_size2=999999999)
+    return render(request, 'mst.html', context)
+
 def mst_additional(request):
     print(context)
     if request.method == 'POST':
