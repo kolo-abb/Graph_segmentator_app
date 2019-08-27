@@ -12,6 +12,8 @@ def save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_s
         min_size2=min_size
     if threshold2 is None:
         threshold2=threshold
+    if max_size2 is None:
+        max_size2=999999999
     conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
     cur = conn.cursor()
     cur.execute('INSERT INTO MST_Segmentation (Edges, Threshold,Const,Min_size,Threshold_2,Min_size_2,'
