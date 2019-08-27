@@ -78,38 +78,36 @@ def get_bitmap(R, threshold, dimx, dimy):
 
 def image_processing_pipeline(image, foreground, background):
     # image is a np.array, in RGB model
-    width, height, depth = image.shape
-
-    result_image = np.zeros((width, height, depth))
-    
+    width, height, depth = np.array(image).shape
+    # rescaling
+    size_y = 128
+    size_x = int(width * size_y / height)
+    image = image.resize((size_x, size_y), Image.ANTIALIAS)
+    y, u, v = transform_rgb_to_yuv(np.array(image))
+    im_g = np.array(y)
+    im_arr = im_g.reshape((im_g.shape[0],im_g.shape[1],1))    
     mu1, std1, mu2, std2 = get_distributions(foreground, background)
     
-    for d in range(depth):
-        arr = image[:,:,d]
-        
-        G = create_graph(arr, mu1, std1, mu2, std2)
-        
-        R = edmonds_karp(G, 's', 't')
+    G = create_graph(im_arr, mu1, std1, mu2, std2)
+    
+    R = edmonds_karp(G, 's', 't')
 
-        print('Current flow:', R.graph['flow_value'], end=' ')
+    print('Current flow:', R.graph['flow_value'], end=' ')
 
-        dimx = arr.shape[0]
-        dimy = arr.shape[1]
-        flows = [R['s'][(i,j)]['flow'] for i in range(dimx) for j in range(dimy)]
-        threshold = 2 * np.mean(flows)
-        bitmap = get_bitmap(R, threshold, dimx, dimy)
+    dimx = im_arr.shape[0]
+    dimy = im_arr.shape[1]
+    flows = [R['s'][(i,j)]['flow'] for i in range(dimx) for j in range(dimy)]
+    threshold = 2 * np.mean(flows)
+    bitmap = get_bitmap(R, threshold, dimx, dimy)
 
-        arr2 = arr * bitmap
-
-        result_image[:,:,d] = arr2
-
-        print('Slice {}: done!'.format(d))
+    result_image = im_arr[:,:,0] * bitmap
+    
+    print('Slice {}: done!'.format(0))
 
     for i in range(result_image.shape[0]):
         for j in range(result_image.shape[1]):
-            for k in range(result_image.shape[2]):
-                if result_image[i,j,k] == 0:
-                    result_image[i,j,k] = 255
+            if result_image[i,j] == 0:
+                result_image[i,j] = 255
                         
     # return R # ??
-    return result_image
+    return Image.fromarray(np.transpose(result_image), 'L')
