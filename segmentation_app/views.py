@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 
 from segmentator import main_api as seg
+from segmentation_app import connector
 
 
 # Create your views here.
@@ -60,14 +61,13 @@ def mst(request):
         context['counter'] = result[1]
         context['forest'] = result[2]
         context['graph'] = result[3]
+
+        context['edges8'] = edges8
+        context['const'] = const
+        context['min_size'] = min_size
+        context['threshold'] = threshold
     return render(request, 'mst.html', context)
 
-
-def save_mst(request):
-
-    save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_size,threshold2=None,
-             const2=None,min_size2=None,max_size2=999999999)
-    return render(request, 'mst.html', context)
 
 def mst_additional(request):
     print(context)
@@ -98,7 +98,40 @@ def mst_additional(request):
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
+
+        context['const2'] = const
+        context['min_size2'] = min_size
+        context['max_size2'] = max_size
+        context['threshold2'] = threshold
     return render(request, 'mst.html', context)
+
+
+def save_mst(request):
+    img_base=context['image']
+    img_segmented=context['segmented_image']
+    name=request.POST.get("Name")
+    description=request.POST.get("Description")
+    counter=context['counter']
+
+    edges=context['edges8']
+    threshold=context['threshold']
+    const=context['const']
+    min_size=context['min_size']
+    if('threshold2' in context.keys()):
+        threshold2=context['threshold2']
+        const2=context['const2']
+        min_size2=context['min_size2']
+        max_size2=context['max_size2']
+    else:
+        threshold2=None
+        const2=None
+        min_size2=None
+        max_size2=None
+
+    connector.save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_size,threshold2,
+             const2,min_size2,max_size2,counter)
+    return render(request, 'mst.html', context)
+
 
 def two_cc(request):
     print(context)
@@ -122,7 +155,30 @@ def two_cc(request):
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
+
+        context['channel'] = channel
+        context['const'] = const
+        context['threshold'] = threshold
+        context['fill_in'] = fill_in
     return render(request, 'two_cc.html', context)
+
+
+def save_two_cc(request):
+    img_base=context['image']
+    img_segmented=context['segmented_image']
+    name=request.POST.get("Name")
+    description=request.POST.get("Description")
+    counter=context['counter']
+
+    channel=context['channel']
+    threshold=context['threshold']
+    filling=context['fill_in']
+    const=context['const']
+
+    connector.save_two_cc(img_base,img_segmented,name,description,channel,threshold,filling,const,counter)
+
+    return render(request, 'two_cc.html', context)
+
 
 def ngc(request):
     print(context)
@@ -139,7 +195,27 @@ def ngc(request):
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
+
+        context['Decision'] = Decision
+        context['I'] = I
+        context['X'] = X
     return render(request, 'ngc.html', context)
+
+
+def save_ngc(request):
+    img_base=context['image']
+    img_segmented=context['segmented_image']
+    name=request.POST.get("Name")
+    description=request.POST.get("Description")
+    counter=context['counter']
+
+    type=context['Decision']
+    sensivity=context['I']
+    sensivity_location=context['X']
+
+    connector.save_ngc(img_base,img_segmented,name,description,type,sensivity,sensivity_location,counter)
+    return render(request, 'ngc.html', context)
+
 
 def interactive(request):
     print(context)
@@ -148,7 +224,19 @@ def interactive(request):
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
-    return render(request, 'interactive.html', context) 
+    return render(request, 'interactive.html', context)
+
+
+def save_interactive(request):
+    img_base=context['image']
+    img_segmented=context['segmented_image']
+    name=request.POST.get("Name")
+    description=request.POST.get("Description")
+    counter=context['counter']
+
+    connector.save_interactive(img_base,img_segmented,name,description,counter)
+    return render(request, 'interactive.html', context)
+
 
 @ensure_csrf_cookie
 def choose_alg(request):

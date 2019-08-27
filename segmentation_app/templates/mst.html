@@ -78,19 +78,22 @@
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
+
+      {% if segmented_image %}
       <br>
       <br>
 
        <form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
                {% csrf_token %}
-               Maximal segment size(excluding background):<br>
+               Name:<br>
               <input type="text" name="Name" value='Name'><br>
-               Const:<br>
+               Description:<br>
               <input type="text" name="Description" value='Description'><br>
                 <br>
               <input type="submit" value="Submit">
               <input type="reset">
        </form>
+      {% endif %}
 
   </div>
 </div>
