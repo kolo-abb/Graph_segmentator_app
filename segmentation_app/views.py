@@ -23,10 +23,20 @@ def home(request):
 def segmentation(request):
     if request.method == 'POST':
         context.clear()
-        uploaded_file = request.FILES['image']
+        uploaded_file = request.FILES.get('image')
         fs = FileSystemStorage()
+        if(uploaded_file is None):
+            return render(request, 'segmentation.html', context)
+        # name=uploaded_file.name
+        # uploaded_file=Image.open(uploaded_file)
+        # if (uploaded_file.width>=500) | (uploaded_file.height>=500):
+        #     uploaded_file = uploaded_file.resize((500, 500))
+        print(type(uploaded_file))
         name = fs.save(uploaded_file.name, uploaded_file)
         context['image'] = fs.url(name)
+        # context['image']=Image.open(context['image'])
+        # if (context['image'].width>=500) | (context['image'].height>=500):
+        #     context['image'] = context['image'].resize((500, 500))
     return render(request, 'segmentation.html', context)
 
 
