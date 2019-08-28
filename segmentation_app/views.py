@@ -2,6 +2,8 @@ from PIL import Image
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
+import django
+import io
 
 from segmentator import main_api as seg
 from segmentation_app import connector
@@ -27,16 +29,17 @@ def segmentation(request):
         fs = FileSystemStorage()
         if(uploaded_file is None):
             return render(request, 'segmentation.html', context)
-        # name=uploaded_file.name
-        # uploaded_file=Image.open(uploaded_file)
-        # if (uploaded_file.width>=500) | (uploaded_file.height>=500):
-        #     uploaded_file = uploaded_file.resize((500, 500))
-        print(type(uploaded_file))
+        print(type(uploaded_file.file))
+        name=uploaded_file.name
+        uploaded_file=Image.open(uploaded_file)
+        if (uploaded_file.width>=500) | (uploaded_file.height>=500):
+            uploaded_file = uploaded_file.resize((500, 500))
+        byte_io = io.BytesIO()
+        uploaded_file.save(byte_io, 'PNG')
+        uploaded_file=django.core.files.uploadedfile.InMemoryUploadedFile(name=name,file=byte_io,content_type=None, size=None, charset=None,field_name=None)
         name = fs.save(uploaded_file.name, uploaded_file)
         context['image'] = fs.url(name)
-        # context['image']=Image.open(context['image'])
-        # if (context['image'].width>=500) | (context['image'].height>=500):
-        #     context['image'] = context['image'].resize((500, 500))
+        
     return render(request, 'segmentation.html', context)
 
 
