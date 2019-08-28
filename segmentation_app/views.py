@@ -29,11 +29,13 @@ def segmentation(request):
         fs = FileSystemStorage()
         if(uploaded_file is None):
             return render(request, 'segmentation.html', context)
-        print(type(uploaded_file.file))
         name=uploaded_file.name
         uploaded_file=Image.open(uploaded_file)
+
         if (uploaded_file.width>=500) | (uploaded_file.height>=500):
-            uploaded_file = uploaded_file.resize((500, 500))
+            if uploaded_file.width>=uploaded_file.height:
+
+                uploaded_file = uploaded_file.resize((500, 500))
         byte_io = io.BytesIO()
         uploaded_file.save(byte_io, 'PNG')
         uploaded_file=django.core.files.uploadedfile.InMemoryUploadedFile(name=name,file=byte_io,content_type=None, size=None, charset=None,field_name=None)
@@ -55,6 +57,7 @@ def mst(request):
         const=float(request.POST.get("Const"))
         min_size=int(request.POST.get("Min_size"))
         threshold=int(request.POST.get("Threshold"))
+
         if threshold==1:
             result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
                                             threshold=threshold_mst_1,
@@ -264,9 +267,9 @@ def choose_alg(request):
         if name == "interactive":
             return render(request, 'interactive.html', context)
         else:
-            return HttpResponseForbidden('Something is wrong, check if you filled all required positions!2')
+            return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
 
-    return HttpResponseForbidden('Something is wrong, check if you filled all required positions!1')
+    return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
 
 
 def algorithms_desc(request):
@@ -289,3 +292,15 @@ def interactive_desc(request):
     return render(request, 'interactive_desc.html')
 
 
+def load_segmentation(request):
+    data =connector.load_all();
+    context_dic = {'data' : data}
+
+    if request.method == 'POST':
+        context.clear()
+        name = request.POST.get("segmentations")
+        type_seg=name.split(':')[1]
+        name=name.split(':')[0]
+
+
+    return render(request, 'load_segmentation.html', context_dic)

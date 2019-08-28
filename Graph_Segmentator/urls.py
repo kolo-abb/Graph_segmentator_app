@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^save_ngc/', views.save_ngc, name='save_ngc'),
     url(r'^save_two_cc/', views.save_two_cc, name='save_two_cc'),
     url(r'^save_interactive/', views.save_interactive, name='save_interactive'),
+    url(r'^load_segmentation/', views.load_segmentation, name='load_segmentation'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

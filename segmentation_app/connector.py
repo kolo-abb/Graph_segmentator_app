@@ -64,3 +64,11 @@ def save_two_cc(img_base,img_segmented,name,description,channel,threshold,fillin
 def save_interactive(img_base,img_segmented,name,description,counter=0):
     return None
 
+
+def load_all():
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
+    cur = conn.cursor()
+    cur.execute('select * from Segmentations ')
+    data = cur.fetchall()
+    conn.close()
+    return data;
