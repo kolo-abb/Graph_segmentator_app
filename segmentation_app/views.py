@@ -33,15 +33,18 @@ def segmentation(request):
         uploaded_file=Image.open(uploaded_file)
 
         if (uploaded_file.width>=500) | (uploaded_file.height>=500):
-            if uploaded_file.width>=uploaded_file.height:
-
-                uploaded_file = uploaded_file.resize((500, 500))
+            if uploaded_file.width>=uploaded_file.width:
+                scale=500/uploaded_file.width
+                uploaded_file = uploaded_file.resize((500, int(uploaded_file.height*scale)))
+            else:
+                scale = 500 / uploaded_file.height
+                uploaded_file = uploaded_file.resize((500, int(uploaded_file.width * scale)))
         byte_io = io.BytesIO()
         uploaded_file.save(byte_io, 'PNG')
         uploaded_file=django.core.files.uploadedfile.InMemoryUploadedFile(name=name,file=byte_io,content_type=None, size=None, charset=None,field_name=None)
         name = fs.save(uploaded_file.name, uploaded_file)
         context['image'] = fs.url(name)
-        
+
     return render(request, 'segmentation.html', context)
 
 
