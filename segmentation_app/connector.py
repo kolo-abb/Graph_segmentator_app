@@ -1,7 +1,11 @@
 import os
 import sqlite3
+from io import BytesIO
 
-from Graph_Segmentator.settings import BASE_DIR
+from PIL import Image
+
+from Graph_Segmentator.settings import BASE_DIR, STATIC_ROOT
+from segmentation_app.utils import writeTofile
 
 
 def save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_size,threshold2=None,
@@ -72,3 +76,27 @@ def load_all():
     data = cur.fetchall()
     conn.close()
     return data;
+
+
+def load_segmentation(name,type_segmentation):
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
+    cur = conn.cursor()
+    all_info={}
+    cur.execute('select description,base_image,segmented_image,parameters from Segmentations where name=?',(name,))
+    data = cur.fetchall()
+    all_info['description']=data[0][0]
+    print(BASE_DIR)
+    all_info['segmented_name']='/static/media/temporary_new.png'
+    all_info['base_name']='/static/media/temporary.png'
+
+    writeTofile(data[0][2],BASE_DIR+all_info['segmented_name'])
+    writeTofile(data[0][1],BASE_DIR+all_info['base_name'])
+
+
+    s='select * from {} where id={}'.format(str(type_segmentation),data[0][3])
+    cur.execute(s)
+    data = list(cur.fetchall()[0])[1:]
+    all_info['parameters']=data
+    conn.close()
+    return all_info;
+

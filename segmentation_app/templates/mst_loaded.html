@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="column">
+      <h2 style="text-align: center;"><strong>Minimal Spanning Tree</strong></h2>
+      <a href="{% url 'mst_desc' %}" class="tilelink">
+        <h4>Description</h4>
+      </a>
+      <h3 style="text-align: center;">Choose parameters:</h3>
+
+       <form method="post" style="text-align: center;" action="{% url 'mst' %}">
+           {% csrf_token %}
+           Type of graph:<br>
+           <select name="Edges" size="2">
+             {% if edges == "True" %}
+            <option value=True selected="selected">8 Edges</option>
+            <option value=False>4 Edges</option>
+               {% else%}
+            <option value=True >8 Edges</option>
+            <option value=False selected="selected">4 Edges</option>
+               {% endif %}
+          </select>
+           <br>
+           Threshold:<br>
+           <select name="Threshold" size="3">
+               {% if threshold == 1 %}
+               <option value=1 selected="selected">edge weight + const * 1.0 * sqrt(size of a segment)</option>
+               <option value=2 >edge weight + const * 1.0 / sqrt(size of a segment)</option>
+               <option value=3 >const</option>
+               {% elif threshold == 2 %}
+               <option value=1 >edge weight + const * 1.0 * sqrt(size of a segment)</option>
+               <option value=2 selected="selected">edge weight + const * 1.0 / sqrt(size of a segment)</option>
+               <option value=3 >const</option>
+               {% else %}
+               <option value=1 >edge weight + const * 1.0 * sqrt(size of a segment)</option>
+               <option value=2 >edge weight + const * 1.0 / sqrt(size of a segment)</option>
+               <option value=3 selected="selected">const</option>
+               {% endif %}
+          </select>
+           <br>
+          Const:<br>
+          <input type="number" name="Const" value={{ const }}><br>
+          Minimal segment size:<br>
+          <input type="number" name="Min_size" value={{ min_size }}><br><br>
+          <input type="submit" value="Submit">
+          <input type="reset">
+        </form>
+        <br>
+       <br>
+       {% if segmented_image %}
+            <h3 style="text-align: center;"><strong>Additional segmentation for too large objects</strong></h3>
+            <h3 style="text-align: center;">Choose parameters:</h3>
+
+           <form method="post" style="text-align: center;" action="{% url 'mst_additional' %}">
+               {% csrf_token %}
+               Threshold:<br>
+               <select name="Threshold" size="3">
+               {% if threshold2 == 1 %}
+               <option value=1 selected="selected">edge weight + const * 1.0 * sqrt(size of a segment)</option>
+               <option value=2 >edge weight + const * 1.0 / sqrt(size of a segment)</option>
+               <option value=3 >const</option>
+               {% elif threshold2 == 2 %}
+               <option value=1 >edge weight + const * 1.0 * sqrt(size of a segment)</option>
+               <option value=2 selected="selected">edge weight + const * 1.0 / sqrt(size of a segment)</option>
+               <option value=3 >const</option>
+               {% else %}
+               <option value=1 >edge weight + const * 1.0 * sqrt(size of a segment)</option>
+               <option value=2 >edge weight + const * 1.0 / sqrt(size of a segment)</option>
+               <option value=3 selected="selected">const</option>
+               {% endif %}
+          </select>
+               <br>
+               Minimal segment size (excluding background):<br>
+              <input type="number" name="Min_size" value={{ min_size2 }}><br>
+               Maximal segment size (excluding background):<br>
+              <input type="number" name="Max_size" value={{ max_size2 }}><br>
+               Const:<br>
+              <input type="number" name="Const" value={{ const2 }}><br><br>
+            </form>
+       {% endif %}
+
+
+  </div>
+
+  <div class="column">
+    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
+
+        {% if segmented_image %}
+            <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        {% endif %}
+        {% if counter %}
+            <p style="text-align: center;">Number of objects: {{ counter }}</p>
+        {% endif %}
+
+        <br>
+
+        {% if image %}
+            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+        {% else %}
+            {% load static %}
+            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% endif %}
+
+      {% if segmented_image %}
+      <br>
+      <br>
+
+       <form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
+               {% csrf_token %}
+               Name:<br>
+              <input type="text" name="Name" value='{{ name }}' readonly><br>
+               Description:<br>
+              <input type="text" name="Description" value='{{ description }}' readonly><br>
+                <br>
+       </form>
+      {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+</html>

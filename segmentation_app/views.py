@@ -5,8 +5,10 @@ from django.shortcuts import render
 import django
 import io
 
+from Graph_Segmentator.settings import BASE_DIR
 from segmentator import main_api as seg
 from segmentation_app import connector
+from segmentation_app.utils import convertToBinaryData
 
 
 # Create your views here.
@@ -26,13 +28,14 @@ def segmentation(request):
     if request.method == 'POST':
         context.clear()
         uploaded_file = request.FILES.get('image')
-        fs = FileSystemStorage()
+        fs = FileSystemStorage(base_url=BASE_DIR+'/static/media/')
         if(uploaded_file is None):
             return render(request, 'segmentation.html', context)
         name=uploaded_file.name
         uploaded_file=Image.open(uploaded_file)
 
         if (uploaded_file.width>=500) | (uploaded_file.height>=500):
+<<<<<<< Updated upstream
             if uploaded_file.width>=uploaded_file.width:
                 scale=500/uploaded_file.width
                 uploaded_file = uploaded_file.resize((500, int(uploaded_file.height*scale)))
@@ -45,6 +48,20 @@ def segmentation(request):
         name = fs.save(uploaded_file.name, uploaded_file)
         context['image'] = fs.url(name)
 
+=======
+            if uploaded_file.width>=uploaded_file.height:
+
+                uploaded_file = uploaded_file.resize((500, 500))
+        # byte_io = io.BytesIO()
+        # uploaded_file.save(byte_io, 'PNG')
+        # uploaded_file=django.core.files.uploadedfile.InMemoryUploadedFile(name=name,file=byte_io,content_type=None, size=None, charset=None,field_name=None)
+        # name = fs.save(uploaded_file.name, uploaded_file)
+        uploaded_file.save('static/media/temp.png')
+        context['image'] = '/static/media/temp.png'
+        print(uploaded_file)
+        print(fs.url(name))
+        
+>>>>>>> Stashed changes
     return render(request, 'segmentation.html', context)
 
 
@@ -62,15 +79,15 @@ def mst(request):
         threshold=int(request.POST.get("Threshold"))
 
         if threshold==1:
-            result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+            result= seg.mst_1const(Image.open(BASE_DIR+context['image']), edges_8=edges8,
                                             threshold=threshold_mst_1,
                                             const=const,min_size=min_size)
         elif threshold==2:
-            result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+            result= seg.mst_1const(Image.open(BASE_DIR+context['image']), edges_8=edges8,
                                             threshold=threshold_mst_2,
                                             const=const,min_size=min_size)
         elif threshold==3:
-            result= seg.mst_1const(Image.open(context['image']), edges_8=edges8,
+            result= seg.mst_1const(Image.open(BASE_DIR+context['image']), edges_8=edges8,
                                             threshold=threshold_mst_3,
                                             const=const,min_size=min_size)
         else:
@@ -126,8 +143,8 @@ def mst_additional(request):
 
 
 def save_mst(request):
-    img_base=context['image']
-    img_segmented=context['segmented_image']
+    img_base=convertToBinaryData(BASE_DIR+context['image'])
+    img_segmented=convertToBinaryData(BASE_DIR+context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
@@ -162,13 +179,13 @@ def two_cc(request):
         if threshold==1:
             const=None
         if channel==1:
-            result = seg.two_connected_components(Image.open(context['image']),channel="all", fill_in=fill_in, thresh=const)
+            result = seg.two_connected_components(Image.open(BASE_DIR+context['image']),channel="all", fill_in=fill_in, thresh=const)
         elif channel==2:
-            result= seg.two_connected_components(Image.open(context['image']),channel="red",  fill_in=fill_in, thresh=const)
+            result= seg.two_connected_components(Image.open(BASE_DIR+context['image']),channel="red",  fill_in=fill_in, thresh=const)
         elif channel==3:
-            result= seg.two_connected_components(Image.open(context['image']),channel="green",  fill_in=fill_in, thresh=const)
+            result= seg.two_connected_components(Image.open(BASE_DIR+context['image']),channel="green",  fill_in=fill_in, thresh=const)
         elif channel==4:
-            result= seg.two_connected_components(Image.open(context['image']),channel="blue",  fill_in=fill_in, thresh=const)
+            result= seg.two_connected_components(Image.open(BASE_DIR+context['image']),channel="blue",  fill_in=fill_in, thresh=const)
         else:
             print("Problem");
         result[0].save('static/media/temporary.png')
@@ -183,8 +200,8 @@ def two_cc(request):
 
 
 def save_two_cc(request):
-    img_base=context['image']
-    img_segmented=context['segmented_image']
+    img_base=convertToBinaryData(context['image'])
+    img_segmented=convertToBinaryData(context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
@@ -222,8 +239,8 @@ def ngc(request):
 
 
 def save_ngc(request):
-    img_base=context['image']
-    img_segmented=context['segmented_image']
+    img_base=convertToBinaryData(context['image'])
+    img_segmented=convertToBinaryData(context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
@@ -239,7 +256,7 @@ def save_ngc(request):
 def interactive(request):
     print(context)
     if request.method == 'POST':
-        result = seg.interactive(Image.open(context['image']))
+        result = seg.interactive(Image.open(BASE_DIR+context['image']))
         result[0].save('static/media/temporary.png')
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
@@ -247,8 +264,8 @@ def interactive(request):
 
 
 def save_interactive(request):
-    img_base=context['image']
-    img_segmented=context['segmented_image']
+    img_base=convertToBinaryData(context['image'])
+    img_segmented=convertToBinaryData(context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
@@ -304,6 +321,37 @@ def load_segmentation(request):
         name = request.POST.get("segmentations")
         type_seg=name.split(':')[1]
         name=name.split(':')[0]
+        print(name+' '+type_seg)
+        all_info=connector.load_segmentation(name,type_seg)
+        print(all_info)
+
+        context['segmented_image'] = all_info['segmented_name']
+        context['image'] = all_info['base_name']
+        context['description'] = all_info['description']
+        context['name'] = name
+
+        if(type_seg=='MST_Segmentation'):
+            context['edges'] = all_info['parameters'][0]
+            context['threshold'] = all_info['parameters'][1]
+            context['const'] = all_info['parameters'][2]
+            context['min_size'] = all_info['parameters'][3]
+            context['threshold2'] = all_info['parameters'][4]
+            context['min_size2'] = all_info['parameters'][5]
+            context['max_size2'] = all_info['parameters'][6]
+            context['const2'] = all_info['parameters'][7]
+            context['counter'] = all_info['parameters'][8]
+            return render(request, 'mst_loaded.html', context)
+
+        if(type_seg=='NGC_Segmentation'):
+            return render(request, 'ngc_loaded.html', context)
+
+        if(type_seg=='Two_cc_Segmentation'):
+            return render(request, 'two_cc_loaded.html', context)
+
+        if(type_seg=='Interactive_Segmentation'):
+            return render(request, 'interactive_loaded.html', context)
 
 
     return render(request, 'load_segmentation.html', context_dic)
+
+
