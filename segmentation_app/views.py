@@ -190,8 +190,8 @@ def two_cc(request):
 
 
 def save_two_cc(request):
-    img_base=convertToBinaryData(context['image'])
-    img_segmented=convertToBinaryData(context['segmented_image'])
+    img_base=convertToBinaryData(BASE_DIR+context['image'])
+    img_segmented=convertToBinaryData(BASE_DIR+context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
@@ -213,9 +213,9 @@ def ngc(request):
         I=int(request.POST.get("Intensivity"))
         X=int(request.POST.get("Distance"))
         if Decision == 1:
-            result = seg.basic_ngc(context['image'], I, X)
+            result = seg.basic_ngc(BASE_DIR+context['image'], I, X)
         elif Decision == 2:
-            result = seg.advanced_ngc(context['image'], I, X)
+            result = seg.advanced_ngc(BASE_DIR+context['image'], I, X)
         else:
             print("Problem");
         result[0].save('static/media/temporary.png')
@@ -229,8 +229,8 @@ def ngc(request):
 
 
 def save_ngc(request):
-    img_base=convertToBinaryData(context['image'])
-    img_segmented=convertToBinaryData(context['segmented_image'])
+    img_base=convertToBinaryData(BASE_DIR+context['image'])
+    img_segmented=convertToBinaryData(BASE_DIR+context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
@@ -254,8 +254,8 @@ def interactive(request):
 
 
 def save_interactive(request):
-    img_base=convertToBinaryData(context['image'])
-    img_segmented=convertToBinaryData(context['segmented_image'])
+    img_base=convertToBinaryData(BASE_DIR+context['image'])
+    img_segmented=convertToBinaryData(BASE_DIR+context['segmented_image'])
     name=request.POST.get("Name")
     description=request.POST.get("Description")
     counter=context['counter']
