@@ -184,6 +184,7 @@ def two_cc(request):
 
         context['channel'] = channel
         context['const'] = const
+        print(const)
         context['threshold'] = threshold
         context['fill_in'] = fill_in
     return render(request, 'two_cc.html', context)
@@ -200,6 +201,7 @@ def save_two_cc(request):
     threshold=context['threshold']
     filling=context['fill_in']
     const=context['const']
+    print(const)
 
     connector.save_two_cc(img_base,img_segmented,name,description,channel,threshold,filling,const,counter)
 
@@ -333,9 +335,18 @@ def load_segmentation(request):
             return render(request, 'mst_loaded.html', context)
 
         if(type_seg=='NGC_Segmentation'):
+            context['type'] = all_info['parameters'][0]
+            context['sensivity'] = all_info['parameters'][1]
+            context['sensivity_loc'] = all_info['parameters'][2]
+            context['counter'] = all_info['parameters'][3]
             return render(request, 'ngc_loaded.html', context)
 
         if(type_seg=='Two_cc_Segmentation'):
+            context['channel'] = all_info['parameters'][0]
+            context['filling'] = all_info['parameters'][1]
+            context['const'] = all_info['parameters'][2]
+            context['counter'] = all_info['parameters'][3]
+            context['threshold'] = all_info['parameters'][4]
             return render(request, 'two_cc_loaded.html', context)
 
         if(type_seg=='Interactive_Segmentation'):

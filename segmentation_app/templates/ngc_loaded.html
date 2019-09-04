@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="column">
+      <h2 style="text-align: center;"><strong>Normalized Graph Cuts</strong></h2>
+       <a href="{% url 'ngc_desc' %}" class="tilelink">
+        <h4>Description</h4>
+      </a>
+      <h3 style="text-align: center;">Choose parameters:</h3>
 
-</body>
+       <form method="post" style="text-align: center;" action="{% url 'ngc' %}">
+           {% csrf_token %}
+	  <br>Type of algorithm:<br>
+	  <select name="Algorithm_type" size="2">
+          {% if type == 1 %}
+	    <option value=1 selected="selected">Basic NGC (simple segmentation and object counting)</option>
+	    <option value=2>Advanced NGC (+ removal of outlined objects)</option>
+          {% else %}
+          <option value=1 >Basic NGC (simple segmentation and object counting)</option>
+	    <option value=2 selected="selected">Advanced NGC (+ removal of outlined objects)</option>
+          {% endif %}
+	  </select><br><br>
+          Sensivity regarding pixels' intensivity:<br>
+	  <input type="number" name="Intensivity" value={{sensivity}}>
+	  <br><br>
+          Sensivity regarding pixels' spatial location:<br>
+          <input type="number" name="Distance" value={{sensivity_loc}}><br>
+          <input type="submit" value="Submit">
+          <input type="reset">
+        </form>
+       {% if segmented_image %}
+       {% endif %}
+  </div>
+
+  <div class="column">
+    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
+
+        {% if segmented_image %}
+            <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        {% endif %}
+        {% if counter %}
+            <p style="text-align: center;">Number of objects: {{ counter }}</p>
+        {% endif %}
+
+        <br>
+
+        {% if image %}
+            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+        {% else %}
+            {% load static %}
+            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% endif %}
+
+      {% if segmented_image %}
+      <br>
+      <br>
+
+       <form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
+               {% csrf_token %}
+               Name:<br>
+              <input type="text" name="Name" value='{{ name }}' readonly><br>
+               Description:<br>
+              <input type="text" name="Description" value='{{ description }}' readonly><br>
+                <br>
+       </form>
+      {% endif %}
+
+  </div>
+</div>
+{% endblock %}
 </html>

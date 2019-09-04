@@ -53,6 +53,7 @@ def save_two_cc(img_base,img_segmented,name,description,channel,threshold,fillin
 
     conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
     cur = conn.cursor()
+    print(const)
     cur.execute('INSERT INTO Two_cc_Segmentation (Channel, Threshold, Filling, Const, Counter)'
                 ' VALUES (?, ?,?,?,?);',(channel,threshold,filling,const,counter))
 
