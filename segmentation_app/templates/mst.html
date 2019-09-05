@@ -92,6 +92,12 @@
                 <br>
               <input type="submit" value="Submit">
               <input type="reset">
+           {% if unique %}
+           <h5 style="color:red">
+               Already in base, choose other name!
+           </h5>
+           {% endif %}
+
        </form>
       {% endif %}
 

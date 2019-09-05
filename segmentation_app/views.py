@@ -153,9 +153,13 @@ def save_mst(request):
         const2=None
         min_size2=None
         max_size2=None
-
-    connector.save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_size,threshold2,
+    try:
+        connector.save_mst(img_base,img_segmented,name,description,edges,threshold,const,min_size,threshold2,
              const2,min_size2,max_size2,counter)
+    except:
+        context_temp=context.copy()
+        context_temp['unique']=True
+        return render(request, 'mst.html', context_temp)
     return render(request, 'mst.html', context)
 
 
@@ -203,7 +207,12 @@ def save_two_cc(request):
     const=context['const']
     print(const)
 
-    connector.save_two_cc(img_base,img_segmented,name,description,channel,threshold,filling,const,counter)
+    try:
+        connector.save_two_cc(img_base,img_segmented,name,description,channel,threshold,filling,const,counter)
+    except:
+        context_temp=context.copy()
+        context_temp['unique']=True
+        return render(request, 'two_cc.html', context_temp)
 
     return render(request, 'two_cc.html', context)
 
@@ -241,7 +250,12 @@ def save_ngc(request):
     sensivity=context['I']
     sensivity_location=context['X']
 
-    connector.save_ngc(img_base,img_segmented,name,description,type,sensivity,sensivity_location,counter)
+    try:
+        connector.save_ngc(img_base,img_segmented,name,description,type,sensivity,sensivity_location,counter)
+    except:
+        context_temp=context.copy()
+        context_temp['unique']=True
+        return render(request, 'ngc.html', context_temp)
     return render(request, 'ngc.html', context)
 
 
