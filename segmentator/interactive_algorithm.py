@@ -116,7 +116,7 @@ def image_processing_pipeline(image, foreground, background):
         print('Current flow:', R.graph['flow_value'], end=' ')
 
         flows = [R['s'][(i,j)]['flow'] for i in range(im_channel.shape[0]) for j in range(im_channel.shape[1])]
-        threshold = 2 * np.mean(flows) ###
+        threshold = 2 * np.mean(flows) ### can be modified with web interface?
         bitmap = get_bitmap(R, threshold, im_channel.shape[0], im_channel.shape[1])
         bitmaps.append(bitmap)
         print('Slice {}: done!'.format(channel))

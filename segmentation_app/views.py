@@ -275,7 +275,6 @@ def interactive(request):
                                  Image.open(context['background']))
 
         result[0].save('static/media/temporary.png')
-        # context['computations_on'] = False
         context['segmented_image'] = "/static/media/temporary.png"
         context['counter'] = result[1]
     return render(request, 'interactive.html', context) 
