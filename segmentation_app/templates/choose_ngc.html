@@ -4,29 +4,23 @@
 <div class="row">
   <div class="column">
       <h2 style="text-align: center;"><strong>Normalized Graph Cuts</strong></h2>
-       <a href="{% url 'ngc_desc' %}" class="tilelink">
+      <a href="{% url 'ngc_desc' %}" class="tilelink">
         <h4>Description</h4>
       </a>
-      <h3 style="text-align: center;">Choose parameters:</h3>
-       <form method="post" style="text-align: center;" action="{% url 'ngc' %}">
+      <h3 style="text-align: center;">Choose algorithm type:</h3>
+
+       <form method="post" style="text-align: center;" action="{% url 'choose_ngc' %}">
            {% csrf_token %}
-	  Type of algorithm:<br>
-	  <select name="Algorithm_type" size="2">
-	    <option value=1 selected="selected">Basic (simple segmentation and object counting)</option>
-	    <option value=2>Advanced (+ removal of outlined objects)</option>
-	  </select><br><br>
-	Sensivity regarding pixels' intensivity:<br>
-	  <input type="number" name="Intensivity" value=625>
-	  <br><br>
-          Sensivity regarding pixels' spatial location:<br>
-          <input type="number" name="Distance" value=4><br><br>
-          <input type="submit" value="Submit">
+	  <select name="Ball_or_not" size="2">
+	    <option value=1 selected="selected">Simple NGC</option>
+	    <option value=2>NGC within a ball</option>
+	  </select><br>
+	<input type="submit" value="Submit">
           <input type="reset">
-	</form>
+        </form>
 	<br>
-       {% if segmented_image %}
-	{% endif %}
-  </div>
+
+ </div>
 
   <div class="column">
     <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
@@ -46,11 +40,12 @@
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
+
       {% if segmented_image %}
       <br>
       <br>
 
-       <form method="post" style="text-align: center;" action="{% url 'save_ngc' %}">
+       <form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
                {% csrf_token %}
                Name:<br>
               <input type="text" name="Name" value='Name'><br>
@@ -59,16 +54,16 @@
                 <br>
               <input type="submit" value="Submit">
               <input type="reset">
-	      <br>
            {% if unique %}
            <h5 style="color:red">
                Already in base, choose other name!
            </h5>
            {% endif %}
+
        </form>
       {% endif %}
 
-  </div>
+ </div>
 </div>
 {% endblock %}
 </html>
