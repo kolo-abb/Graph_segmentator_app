@@ -22,18 +22,31 @@ def transform_rgb_to_yuv(image):
     
     return y_channel, u_channel, v_channel
 
-def get_distributions(foreground, background):
+def get_distributions(foreground, background, channel):
     # foreground, background - Images
     
-    y_foreground, _, _ = transform_rgb_to_yuv(np.array(foreground))
-    y_background, _, _ = transform_rgb_to_yuv(np.array(background))
+    y_foreground, u_foreground, v_foreground = transform_rgb_to_yuv(np.array(foreground))
+    y_background, u_background, v_background = transform_rgb_to_yuv(np.array(background))
     
-    foreground_data = y_foreground.reshape(y_foreground.shape[0] * y_foreground.shape[1], 1)
-    background_data = y_background.reshape(y_background.shape[0] * y_background.shape[1], 1)
-    
+    if channel == 'y':
+        foreground_channel = y_foreground
+        background_channel = y_background
+    elif channel == 'u':
+        foreground_channel = u_foreground
+        background_channel = u_background
+    elif channel == 'v':
+        foreground_channel = v_foreground
+        background_channel = v_background
+    else:
+        print("ERROR")
+        return
+
+    foreground_data = foreground_channel.reshape(foreground_channel.shape[0] * foreground_channel.shape[1], 1)
+    background_data = background_channel.reshape(background_channel.shape[0] * background_channel.shape[1], 1)
+
     mu1, std1 = norm.fit(y_foreground)
     mu2, std2 = norm.fit(y_background)
-        
+    
     return mu1, std1, mu2, std2
 
 def create_graph(arr, mu1, std1, mu2, std2):
@@ -80,34 +93,40 @@ def image_processing_pipeline(image, foreground, background):
     # image is a np.array, in RGB model
     width, height, depth = np.array(image).shape
     # rescaling
-    size_y = 128
+    size_y = 100
     size_x = int(width * size_y / height)
-    image = image.resize((size_x, size_y), Image.ANTIALIAS)
-    y, u, v = transform_rgb_to_yuv(np.array(image))
-    im_g = np.array(y)
-    im_arr = im_g.reshape((im_g.shape[0],im_g.shape[1],1))    
-    mu1, std1, mu2, std2 = get_distributions(foreground, background)
+    resized_image = image.resize((size_x, size_y), Image.ANTIALIAS)
+    y, u, v = transform_rgb_to_yuv(np.array(resized_image))
+    bitmaps = []
+    for channel in ['y', 'u', 'v']:
+        if channel == 'y':
+            im_channel = np.array(y)
+        elif channel == 'u':
+            im_channel = np.array(u)
+        else:
+            im_channel = np.array(v)
+        
+        im_arr = im_channel.reshape((im_channel.shape[0],im_channel.shape[1],1))    
+        mu1, std1, mu2, std2 = get_distributions(foreground, background, channel)
+        
+        G = create_graph(im_arr, mu1, std1, mu2, std2)
+
+        R = edmonds_karp(G, 's', 't')
+
+        print('Current flow:', R.graph['flow_value'], end=' ')
+
+        flows = [R['s'][(i,j)]['flow'] for i in range(im_channel.shape[0]) for j in range(im_channel.shape[1])]
+        threshold = 2 * np.mean(flows) ###
+        bitmap = get_bitmap(R, threshold, im_channel.shape[0], im_channel.shape[1])
+        bitmaps.append(bitmap)
+        print('Slice {}: done!'.format(channel))
     
-    G = create_graph(im_arr, mu1, std1, mu2, std2)
-    
-    R = edmonds_karp(G, 's', 't')
+    result_image = np.array(resized_image)
 
-    print('Current flow:', R.graph['flow_value'], end=' ')
-
-    dimx = im_arr.shape[0]
-    dimy = im_arr.shape[1]
-    flows = [R['s'][(i,j)]['flow'] for i in range(dimx) for j in range(dimy)]
-    threshold = 2 * np.mean(flows)
-    bitmap = get_bitmap(R, threshold, dimx, dimy)
-
-    result_image = im_arr[:,:,0] * bitmap
-    
-    print('Slice {}: done!'.format(0))
-
-    for i in range(result_image.shape[0]):
-        for j in range(result_image.shape[1]):
-            if result_image[i,j] == 0:
-                result_image[i,j] = 255
-                        
-    # return R # ??
-    return Image.fromarray(np.transpose(result_image), 'L')
+    for k in range(result_image.shape[2]):
+        for i in range(result_image.shape[0]):
+            for j in range(result_image.shape[1]):
+                if bitmaps[0][i,j] + bitmaps[1][i,j] + bitmaps[2][i,j] == 0:
+                    result_image[i,j] = 255
+                                
+    return Image.fromarray(np.uint8(result_image), 'RGB').resize((image.size[0], image.size[1]), Image.ANTIALIAS)

@@ -70,7 +70,6 @@ def advanced_ngc(img, I, X):
 
 
 def interactive(original_image, foreground, background):
-
     segmented_image = image_processing_pipeline(original_image, foreground, background)
     counter = 0
 
