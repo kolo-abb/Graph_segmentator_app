@@ -3,6 +3,7 @@ from random import random
 from PIL import Image
 import numpy as np
 import networkx as nx
+from scipy import ndimage, spatial
 
 from segmentator.preprocessing import ngc_open_image, ngc_get_image_arr, \
      find_median
