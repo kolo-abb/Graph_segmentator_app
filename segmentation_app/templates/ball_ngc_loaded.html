@@ -3,29 +3,36 @@
 {% block content %}
 <div class="row">
   <div class="column">
-      <h2 style="text-align: center;"><strong>Normalized Graph Cuts</strong></h2>
+      <h2 style="text-align: center;"><strong>Normalized Graph Cuts within a ball</strong></h2>
        <a href="{% url 'ngc_desc' %}" class="tilelink">
         <h4>Description</h4>
       </a>
       <h3 style="text-align: center;">Choose parameters:</h3>
-       <form method="post" style="text-align: center;" action="{% url 'ngc' %}">
+
+       <form method="post" style="text-align: center;" action="{% url 'ball_ngc' %}">
            {% csrf_token %}
-	  Type of algorithm:<br>
+	  <br>Type of algorithm:<br>
 	  <select name="Algorithm_type" size="2">
+          {% if type == 1 %}
 	    <option value=1 selected="selected">Basic (simple segmentation and object counting)</option>
 	    <option value=2>Advanced (+ removal of outlined objects)</option>
+          {% else %}
+          <option value=1 >Basic (simple segmentation and object counting)</option>
+	    <option value=2 selected="selected">Advanced (+ removal of outlined objects)</option>
+          {% endif %}
 	  </select><br><br>
-	Sensivity regarding pixels' intensivity:<br>
-	  <input type="number" name="Intensivity" value=625>
+	  Radius of included neighbours:<br>
+	  <input type="number" name="Radius" value={{radius}}>
+          Sensivity regarding pixels' intensivity:<br>
+	  <input type="number" name="Intensivity" value={{sensivity}}>
 	  <br><br>
           Sensivity regarding pixels' spatial location:<br>
-          <input type="number" name="Distance" value=4><br><br>
+          <input type="number" name="Distance" value={{sensivity_loc}}><br>
           <input type="submit" value="Submit">
           <input type="reset">
-	</form>
-	<br>
+        </form>
        {% if segmented_image %}
-	{% endif %}
+       {% endif %}
   </div>
 
   <div class="column">
@@ -46,25 +53,18 @@
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
+
       {% if segmented_image %}
       <br>
       <br>
 
-       <form method="post" style="text-align: center;" action="{% url 'save_ngc' %}">
+       <form method="post" style="text-align: center;" action="{% url 'save_ball_ngc' %}">
                {% csrf_token %}
                Name:<br>
-              <input type="text" name="Name" value='Name'><br>
+              <input type="text" name="Name" value='{{ name }}' readonly><br>
                Description:<br>
-              <input type="text" name="Description" value='Description'><br>
+              <input type="text" name="Description" value='{{ description }}' readonly><br>
                 <br>
-              <input type="submit" value="Submit">
-              <input type="reset">
-	      <br>
-           {% if unique %}
-           <h5 style="color:red">
-               Already in base, choose other name!
-           </h5>
-           {% endif %}
        </form>
       {% endif %}
 

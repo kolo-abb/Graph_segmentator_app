@@ -7,3 +7,4 @@ cv2
 graphviz
 networkx.algorithms
 random
+scipy 

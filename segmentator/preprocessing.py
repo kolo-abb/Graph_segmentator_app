@@ -3,6 +3,7 @@ import datetime
 import numpy as np
 import networkx as nx
 from PIL.Image import Image
+from scipy import ndimage, spatial
 import math
 
 def diff(image_arr, x1, y1, x2, y2):
@@ -154,4 +155,36 @@ def create_cut_matrix(image_arr, I, X):
                 capacity = ngc_set_capacity(image_arr, i, j-1, i, j, I, X)
                 M[image_arr[i][j-1]][image_arr[i][j]] += capacity
                 M[image_arr[i][j]][image_arr[i][j-1]] += capacity
+    return M
+
+def ball_cut_matrix(image_arr, I, X, radius):
+    M = np.zeros((256,256))
+    points = []
+    width = image_arr.shape[0]
+    height = image_arr.shape[1]
+    
+    for i in range(width):
+        for j in range(height):
+            points.append((i,j))
+            
+    points = np.asarray(points)
+    
+    Tree = spatial.cKDTree(points, radius)
+    
+    def set_capacity(x1, y1, x2, y2, I, X):
+        
+        dist = spatial.distance.pdist([(x1,y1),(x2,y2)],'euclidean')
+        capacity = np.exp( - ((abs(image_arr[x1][y1] - image_arr[x2][y2]) / I + dist / X )) )
+    
+        return capacity
+
+    for x in points:
+        
+        idx = Tree.query_ball_point(x, radius)
+        for y in points[idx]:
+            
+            capacity = set_capacity(x[0], x[1], y[0], y[1], I, X)
+            M[image_arr[x[0]][x[1]]][image_arr[y[0]][y[1]]] += capacity
+            M[image_arr[y[0]][y[1]]][image_arr[x[0]][x[1]]] += capacity
+            
     return M

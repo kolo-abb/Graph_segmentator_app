@@ -217,6 +217,19 @@ def save_two_cc(request):
     return render(request, 'two_cc.html', context)
 
 
+def choose_ngc(request):
+    if request.method == 'POST':
+        Decision=int(request.POST.get("Ball_or_not"))
+        if Decision == 1:
+            return render(request, 'ngc.html', context)
+        elif Decision == 2:
+            return render(request, 'ball_ngc.html', context)
+        else:
+            return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+
+    return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+
+
 def ngc(request):
     print(context)
     if request.method == 'POST':
@@ -239,6 +252,36 @@ def ngc(request):
     return render(request, 'ngc.html', context)
 
 
+def ball_ngc(request):
+    print(context)
+    if request.method == 'POST':
+        Decision=int(request.POST.get("Algorithm_type"))
+        R=int(request.POST.get("Radius"))
+        I=int(request.POST.get("Intensivity"))
+        X=int(request.POST.get("Distance"))
+        if Decision == 1:
+            if R <= 6:
+                result = seg.basic_ball_ngc(BASE_DIR+context['image'], I, X, R)
+            else:
+                result = seg.basic_ball_ngc(BASE_DIR+context['image'], I, X, 2)
+        elif Decision == 2:
+            if R <= 6:
+                result = seg.advanced_ball_ngc(BASE_DIR+context['image'], I, X, R)
+            else:
+                result = seg.advanced_ball_ngc(BASE_DIR+context['image'], I, X, 2)
+        else:
+            print("Problem");
+        result[0].save('static/media/temporary.png')
+        context['segmented_image'] = "/static/media/temporary.png"
+        context['counter'] = result[1]
+
+        context['Decision'] = Decision
+        context['R'] = R
+        context['I'] = I
+        context['X'] = X
+    return render(request, 'ball_ngc.html', context)
+
+
 def save_ngc(request):
     img_base=convertToBinaryData(BASE_DIR+context['image'])
     img_segmented=convertToBinaryData(BASE_DIR+context['segmented_image'])
@@ -257,6 +300,27 @@ def save_ngc(request):
         context_temp['unique']=True
         return render(request, 'ngc.html', context_temp)
     return render(request, 'ngc.html', context)
+
+
+def save_ball_ngc(request):
+    img_base=convertToBinaryData(BASE_DIR+context['image'])
+    img_segmented=convertToBinaryData(BASE_DIR+context['segmented_image'])
+    name=request.POST.get("Name")
+    description=request.POST.get("Description")
+    counter=context['counter']
+
+    type=context['Decision']
+    radius=context['R']
+    sensivity=context['I']
+    sensivity_location=context['X']
+
+    try:
+        connector.save_ball_ngc(img_base,img_segmented,name,description,type,radius,sensivity,sensivity_location,counter)
+    except:
+        context_temp=context.copy()
+        context_temp['unique']=True
+        return render(request, 'ball_ngc.html', context_temp)
+    return render(request, 'ball_ngc.html', context)
 
 
 def interactive(request):
@@ -289,7 +353,7 @@ def choose_alg(request):
         elif name == "two_cc":
             return render(request, 'two_cc.html', context)
         elif name == "ngc":
-            return render(request, 'ngc.html', context)
+            return render(request, 'choose_ngc.html', context)
         if name == "interactive":
             return render(request, 'interactive.html', context)
         else:
