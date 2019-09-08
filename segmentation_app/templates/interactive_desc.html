@@ -2,6 +2,43 @@
 {% extends "base.html" %}
 {% block content %}
 
+<h2>Interactive Segmentation</h2>
+    <h3>Parameters:</h3>
+        <h4>Foreground sample</h4>
+            <p>
+                This is a subimage of the original image which belongs to its foreground.
+                Will be used to find a probability distribution describing image regions belonging to the foreground.
+            </p>
+        <h4>Background sample</h4>
+            <p>
+                This is a subimage of the original image which belongs to its background.
+                Will be used to find a probability distribution describing image regions belonging to the background.
+            </p>
+    <h3>Steps:</h3>
+        <h4>1. Construction of directed graph that represents our image.</h4>
+            <p>
+                Every pixel is a node in this graph. Nodes are connected if they share an edge in the image. 
+                We add the 'source' and 'sink' nodes that are connected with every node in this graph.
+            </p>
+        <h4>2. Assigning weights to edges of the constructed graph.</h4>
+            <p>
+                Based on probabilities describing if particular pixel belongs more to the foreground or background of the image.
+            </p>
+        <h4>3. Solving a max-flow/min-cut problem on the</h4>
+            <p>
+                    There are several standard algorithms, e.g., Ford-Fulkerson (by finding an augmenting path with O(E max| f |) 
+                    time complexity) or Edmonds-Karp (by using bfs to find the shortest augmenting path, with O(VE2) time complexity) 
+                    to solve the max-flow problem, typical implementations of these algorithms run pretty fast, in polynomial time 
+                    in V, E.
+            </p>
+            <p>
+                <a href="https://sandipanweb.wordpress.com/2018/02/11/interactive-image-segmentation-with-graph-cut/">More informations</a>
+            </p>
+    <br>
+<br>
+<br>
+<br>
+<br>
 
 {% endblock %}
 </html>
