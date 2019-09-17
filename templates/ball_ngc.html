@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+ <script>
+ document.title = "Ball NGC"
+ </script>
+<div class="row">
+	<div class="column">
+		<h2>Normalized Graph Cuts within a ball</h2>
+		<a href="{% url 'ngc_desc' %}" class="button">Description</a>
+		<div class="column__block1">
+			<h3>Choose parameters:</h3>
+			<form method="post" style="text-align: center;" action="{% url 'ball_ngc' %}">
+				{% csrf_token %}
+				<div class="block__row">
+					<label>Type of algorithm:</label>
+					<select name="Algorithm_type" size="2">
+						<option value=1 selected="selected">Basic (simple segmentation and object counting)</option>
+						<option value=2>Advanced (+ removal of outlined objects)</option>
+					</select>
+				</div>
+				<div class="block__row">
+					<label>Radius of included neighbours:</label>
+						<input type="number" name="Radius" value=2>
+				</div>
+				<div class="block__row">
+					<label>Sensivity regarding pixels' intensivity:</label>
+						 <input type="number" name="Intensivity" value=625>
+				</div>
+				<div class="block__row">
+					<label>Sensivity regarding pixels' spatial location:<label>
+						  <input type="number" name="Distance" value=4>
+				</div>
+				<input type="submit" class="button" value="Submit">
+				<input type="reset" class="button" value="Reset">
+			</form>
+		</div>
+		{% if segmented_image %}
+		{% endif %}
+	</div>
+
+	<div class="column">
+		<h2>Segmentation</h2>
+        {% if segmented_image %}
+            <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        {% endif %}
+        {% if counter %}
+            <p style="text-align: center;">Number of objects: {{ counter }}</p>
+        {% endif %}
+        {% if image %}
+            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+        {% else %}
+            {% load static %}
+            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% endif %}
+		{% if segmented_image %}
+			<form method="post" style="text-align: center;" action="{% url 'save_ball_ngc' %}">
+				{% csrf_token %}
+				<div class="block__row">
+					<label>Name:</label>
+					<input type="text" name="Name" value='Name'>
+				</div>
+				<div class="block__row">
+					<label>Description:</label>
+					<input type="text" name="Description" value='Description'>
+				</div>
+				<input class="button" type="submit" value="Submit">
+				<input class="button" type="reset" value="Reset">
+			   {% if unique %}
+				   <h5 style="color:red">
+					   Already in base, choose other name!
+				   </h5>
+			   {% endif %}
+			</form>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+</html>

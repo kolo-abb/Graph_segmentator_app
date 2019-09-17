@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+ <script>
+ document.title = "Saved Analysis"
+ </script>
+    <form style="text-align: center;" method="post" action="{% url 'load_segmentation' %}">
+        {% csrf_token %}
+        <select name="segmentations" size="10">
+            {% for item in data %}
+                <option value={{item.1}}:{{item.5}} selected="selected">{{item.1}} -{{item.5}} </option>
+            {% endfor %}
+        </select>
+        <input class="button" type="submit" value="Choose">
+	</form>
+
+{% endblock %}
+</html>

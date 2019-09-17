@@ -1,0 +1,39 @@
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+		<link rel="icon" href="https://cdn1.iconfinder.com/data/icons/graph-chart-4/96/graph_chart_theory_network-512.png">
+        <title>Home - Graph Segmentator</title>
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap&subset=latin-ext" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/baseStyle.css' %}" />
+
+
+    </head>
+    <body>
+        <div id="page" class="hfeed site">
+            <header>
+                <div class="header">
+                    <div class="main-head-wrap inner-wrap clearfix">
+                        <div id="header-logo-image">
+                        </div>
+                        <div id="header-text" class="">
+                           <h1>
+                                <a href="/" title="Graph Segmentator" rel="home">Graph Segmentator</a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="main">
+				<div class="main__content">
+					{% block content %}
+					{% endblock %}
+				</div>
+            </div>
+            <footer id="colophon">
+            </footer>
+        </div>
+    </body>
+</html>
