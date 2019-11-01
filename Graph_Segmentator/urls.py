@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^save_two_cc/', views.save_two_cc, name='save_two_cc'),
     url(r'^save_interactive/', views.save_interactive, name='save_interactive'),
     url(r'^load_segmentation/', views.load_segmentation, name='load_segmentation'),
+    url(r'^choose_alg_tracking/', views.choose_alg_tracking, name='choose_alg_tracking'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

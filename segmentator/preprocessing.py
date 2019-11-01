@@ -168,7 +168,7 @@ def ball_cut_matrix(image_arr, I, X, radius):
             points.append((i,j))
             
     points = np.asarray(points)
-    
+
     Tree = spatial.cKDTree(points, radius)
     
     def set_capacity(x1, y1, x2, y2, I, X):

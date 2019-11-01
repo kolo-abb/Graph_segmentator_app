@@ -4,9 +4,11 @@ body {
 	background: url('/static/images/background_graph.png');
 	background-size:cover;
 	background-repeat: no-repeat;
-	margin: 0;
-	padding: 0;
+	margin: 50;
+	padding: 50;
 	min-height:100vh;
+	color: #FFF;
+	text-align: center;
 }
 
 a {
@@ -20,6 +22,7 @@ a:hover {
 }
 
 h1 {
+    text-align: center;
 	color: #FFF;
 	font-size: 80px;
 	text-align: right;
@@ -36,7 +39,7 @@ h2 {
 
 h3 {
   color: #FFF;
-  text-align: left;
+  text-align: center;
   font-size: 35px;
   font-weight: 600;
   margin-bottom: 24px;
@@ -242,4 +245,104 @@ label {
 	display: block;
 	width: 100%;
 	font-weight: 600;
+}
+
+
+.tile1
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/dump-truck-segmented-1024x576.png');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
+
+.tile1:hover
+{
+	box-shadow: 15px 15px black;
+}
+
+.tile2
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/GAN-birds-tracking.png');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.tile2:hover
+{
+	box-shadow: 15px 15px black;
+}
+
+.tile3
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/ext.jpeg');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.tile3:hover
+{
+	box-shadow: 15px 15px black;
+}
+
+.tile4
+{
+	margin: 1%;
+	width: 48%;
+	height: 250px;
+	background-color: black;
+	float: left;
+	text-align: center;
+	background: url('/static/images/algos.jpeg');
+	background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-size: 28px;
+    font-family: "Times New Roman";
+    font-weight: 600;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
+
+
+.tile4:hover
+{
+	box-shadow: 15px 15px black;
 }
