@@ -25,7 +25,7 @@ h1 {
     text-align: center;
 	color: #FFF;
 	font-size: 80px;
-	text-align: right;
+	text-align: center;
 	font-weight: 600;
 }
 
@@ -250,8 +250,8 @@ label {
 
 .tile1
 {
-	margin: 1%;
-	width: 48%;
+	margin: 3%;
+	width: 44%;
 	height: 250px;
 	background-color: black;
 	float: left;
@@ -275,8 +275,8 @@ label {
 
 .tile2
 {
-	margin: 1%;
-	width: 48%;
+	margin: 3%;
+	width: 44%;
 	height: 250px;
 	background-color: black;
 	float: left;
@@ -299,8 +299,8 @@ label {
 
 .tile3
 {
-	margin: 1%;
-	width: 48%;
+	margin: 3%;
+	width: 44%;
 	height: 250px;
 	background-color: black;
 	float: left;
@@ -323,8 +323,8 @@ label {
 
 .tile4
 {
-	margin: 1%;
-	width: 48%;
+	margin: 3%;
+	width: 44%;
 	height: 250px;
 	background-color: black;
 	float: left;
