@@ -6,7 +6,7 @@ import networkx as nx
 from PIL import Image, ImageFilter, ImageEnhance
 from joblib import Parallel, delayed
 import multiprocessing
-from tracker import two_cc
+from tracker import two_cc, simple_segmentation
 from skimage import measure
 from statistics import median
 import time
@@ -148,8 +148,8 @@ def active_colloids_tracking_pipeline(frames):
     # segmentacja
     num_frames = len(frames)
     num_cores = multiprocessing.cpu_count()
-    segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(num_frames))
-#     segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation)(frames[i]) for i in range(num_frames))
+    # segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(num_frames))
+    segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(num_frames))
     
     G = nx.DiGraph()
     
