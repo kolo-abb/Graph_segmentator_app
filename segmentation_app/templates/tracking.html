@@ -20,7 +20,8 @@
         <form style="text-align: center;" method="post" action="{% url 'choose_alg_tracking' %}">
             {% csrf_token %}
           <select name="algos" size="5">
-              <option value="locall tracking" selected="selected">Local Tracking</option>
+              <option value="local tracking" selected="selected">Local Tracking</option>
+              <option value="active colloids tracking" selected="selected">Active Colloids Tracking</option>
           </select>
             <br>
             Number of frames in output:<br>

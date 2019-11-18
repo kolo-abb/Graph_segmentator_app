@@ -6,7 +6,7 @@ import networkx as nx
 from PIL import Image, ImageFilter, ImageEnhance
 from joblib import Parallel, delayed
 import multiprocessing
-import two_cc
+from tracker import two_cc
 from skimage import measure
 from statistics import median
 import time

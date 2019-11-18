@@ -25,16 +25,16 @@ def tracking(request):
     if request.method == 'POST':
         context.clear()
         uploaded_file = request.FILES.get('video')
-        fs = FileSystemStorage(base_url=BASE_DIR+'/static/media/')
-        if(uploaded_file is None):
+        fs = FileSystemStorage(base_url=BASE_DIR + '/static/media/')
+        if (uploaded_file is None):
             return render(request, 'tracking.html', context)
-        name=uploaded_file.name
+        name = uploaded_file.name
         # uploaded_file=cv2.VideoCapture(uploaded_file.read())
         # print(uploaded_file)
         file = open('static/media/temp_video.mp4', 'wb')
         file.write(uploaded_file.read())
         file.close()
-        context['video']='/static/media/temp_video.mp4'
+        context['video'] = '/static/media/temp_video.mp4'
 
     return render(request, 'tracking.html', context)
 
@@ -48,10 +48,15 @@ def choose_alg_tracking(request):
         b = int(request.POST.get("b"))
         c = int(request.POST.get("c"))
         d = int(request.POST.get("d"))
-        if name == "locall tracking":
-            video=cv2.VideoCapture('static/media/temp_video.mp4')
-            video_out=main_api.tracking_local(video,n_frames,(a,b,c,d))
-            context['video_out']='/'+video_out
+        if name == "local tracking": ## local, poprawic
+            video = cv2.VideoCapture('static/media/temp_video.mp4')
+            video_out = main_api.tracking_local(video,n_frames,(a,b,c,d))
+            context['video_out'] = '/' + video_out
+            return render(request, 'local_video.html', context)
+        elif name == 'active colloids tracking':
+            video = cv2.VideoCapture('static/media/temp_video.mp4')
+            video_out = main_api.active_colloids_tracking(video, n_frames, (a,b,c,d))
+            context['video_out'] = '/' + video_out
             return render(request, 'local_video.html', context)
         else:
             return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
