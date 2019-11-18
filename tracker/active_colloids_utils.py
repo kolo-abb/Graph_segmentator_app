@@ -142,3 +142,90 @@ def get_frame_mass_centers(frame):
     frame_arr = np.array(frame)
     labels = measure.label(frame_arr)
     return get_all_mass_centers(labels)
+
+def active_colloids_tracking_pipeline(frames):
+    tracking_start = time.time()
+    # segmentacja
+    num_frames = len(frames)
+    num_cores = multiprocessing.cpu_count()
+    segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(num_frames))
+#     segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation)(frames[i]) for i in range(num_frames))
+    
+    G = nx.DiGraph()
+    
+    all_mass_centers = []
+    start = time.time()
+    all_mass_centers = Parallel(n_jobs=num_cores)(delayed(get_frame_mass_centers)(segments[i]) for i in range(num_frames))
+    end = time.time()
+    print('Elapsed seconds of segmentation:', end - start)
+    
+    # adding nodes
+    for i in range(num_frames):
+        frame_mass_centers = all_mass_centers[i]
+        for j in range(len(frame_mass_centers)):
+            pos_x = frame_mass_centers[j][0]
+            pos_y = frame_mass_centers[j][1]
+            frame_number = i
+            G.add_node((pos_x, pos_y, frame_number), pos=(pos_x, pos_y))
+    end = time.time()
+    
+    # adding edges (arcs)
+    d_max = 20 # TODO generalize
+    
+    for frame_number in range(num_frames - 1): # we set attributes for FF
+        for vertex1 in vertices_from_ith_frame(G, frame_number):
+            for vertex2 in vertices_from_ith_frame(G, frame_number + 1):
+                if get_distance(vertex1, vertex2) < d_max:
+                    weight = int(10 * get_distance(vertex1, vertex2) / d_max)
+                    G.add_edge(vertex1, vertex2, capacity=10, weight=weight)
+    
+    dist_border = 100000 #### TODO generalize
+    
+    print('Number of edges before the refinement', len(G.edges))
+    initial_graph_refinement(G, d_max, dist_border)
+    print('Number of edges before the refinement', len(G.edges))
+    
+    # new nodes
+    source = (-1,-1,-1)
+    G.add_node(source, pos=(-1,1)) # source
+    sink = (-2,-2,-2)
+    G.add_node(sink, pos=(700,1)) # sink
+    
+    # new edges
+    for vertex in vertices_from_ith_frame(G, 0):
+        G.add_edge(source, vertex, capacity=10, weight=0)
+
+    for vertex in vertices_from_ith_frame(G, get_num_frames(G) - 1):
+        G.add_edge(vertex, sink, capacity=10, weight=0)
+        
+    # weights should not be floats! We use only integers, otherwise calculations will last forever!
+    resultFlowDict = nx.max_flow_min_cost(G, source, sink, capacity='capacity', weight='weight')
+    
+    tracking_end = time.time()
+    print('Tracking finished, elapsed seconds:', tracking_end - tracking_start)
+    
+    detected_objects = []
+    
+    visited = {}
+    for node in G.nodes:
+        visited[node] = False
+
+    results = [np.array(f) for f in frames]
+    
+    radius = 20
+    for node in G.nodes:
+        if not visited[node]:
+            detected_objects.append(node)
+            color = (int(random() * 255), int(random() * 255), int(random() * 255))
+            while node != (-2,-2,-2):
+                center = (node[1], node[0])
+                frame = node[2]
+                results[frame] = cv2.circle(results[frame], center, radius, color, thickness=3)
+                if resultFlowDict[node] == {}:
+                    break
+                visited[node] = True
+                node = list(resultFlowDict[node].keys())[0]
+    
+    results = [Image.fromarray(r) for r in results]
+    
+    return results, G, resultFlowDict # type: list<Image>
