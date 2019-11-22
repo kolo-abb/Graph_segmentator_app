@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
+ <script>
+ document.title = "Segmentation"
+ </script>
 <div class="row">
-  <div class="column">
-      <h2 style="text-align: center;">Upload image</h2>
+	<div class="column">
+		<div class="column__block">
+			<h2 style="text-align: center;">Upload image</h2>
+			<form style="text-align: center;"  method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input id="id_image" type="file" class="input" name="image">
+				<input class="button" type="submit" value="Submit"/>
+			</form>
+		</div>
+		<div class="column__block">
+			<h2>Choose algorithm</h2>
+			<form style="text-align: center;" method="post" action="{% url 'choose_alg' %}">
+				{% csrf_token %}
+				<select name="algos" size="5">
+					<option value="mst" selected="selected">Minimal Spanning Tree</option>
+					<option value="two_cc">Two-connected</option>
+					<option value="ngc">Normalized Graph Cuts</option>
+					<option value="interactive">Interactive Segmentation</option>
+				 </select>
+				{% if image %}
+					<input class="button" type="submit" value="Submit">
+				{% else %}
+					<input class="button disabled" type="submit" value="Submit" disabled>
+				{% endif %}
+			</form>
+		</div>
+	</div>
 
-      <form style="text-align: center;"  method="post" enctype="multipart/form-data">{% csrf_token %}
-        <p>
-            {% csrf_token %}
-            <input id="id_image" type="file" class="" name="image">
-        </p>
-            <input type="submit" value="Submit" />
-      </form>
-
-      <br>
-      <br>
-
-      <h2 style="text-align: center;">Choose algorithm</h2>
-        <form style="text-align: center;" method="post" action="{% url 'choose_alg' %}">
-            {% csrf_token %}
-          <select name="algos" size="5">
-              <option value="mst" selected="selected">Minimal Spanning Tree</option>
-              <option value="two_cc">Two-connected</option>
-              <option value="ngc">Normalized Graph Cuts</option>
-              <option value="interactive">Interactive Segmentation</option>
-          </select>
-          <br><br>
-            {% if image %}
-            <input type="submit" value="Submit">
-            {% else %}
-            <input type="submit" value="Submit" disabled>
-            {% endif %}
-        </form>
-
-
-  </div>
-
-  <div class="column">
-    <h2 style="text-align: center;"><strong>Uploaded image</strong></h2>
-
-        {% if image %}
-            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
-        {% else %}
-            {% load static %}
-            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
-        {% endif %}
-
-  </div>
+	<div class="column">
+		<h2>Uploaded image</h2>
+		<div class="image__container">
+			{% if image %}
+			   <img src="{{ image }}" alt=""  />
+			{% else %}
+				{% load static %}
+				<img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" />
+			{% endif %}
+		</div>
+	</div>
 </div>
 {% endblock %}
 </html>

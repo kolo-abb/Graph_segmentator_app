@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
+ <script>
+ document.title = "Two-cc"
+ </script>
 <div class="row">
   <div class="column">
-      <h2 style="text-align: center;"><strong>Two-connected components</strong></h2>
-       <a href="{% url 'two_cc_desc' %}" class="tilelink">
-        <h4>Description</h4>
-      </a>
-      <h3 style="text-align: center;">Choose parameters:</h3>
-
-       <form method="post" style="text-align: center;" action="{% url 'two_cc' %}">
-           {% csrf_token %}
-           Channel:<br>
-               <select name="Channel" size="4">
-                   <option value=1 selected="selected">All</option>
-                   <option value=2 >Red (recommended for bees)</option>
-                   <option value=3 >Green</option>
-                    <option value=4 >Blue (recommended for blood cells)</option>
-              </select>
-           <br>
-           Threshold:<br>
-               <select name="Threshold" size="2">
-                   <option value=1 selected="selected">Otsu's threshold</option>
-                   <option value=2 >Const</option>
-               </select>
-           <br>
-           Const (if was choosen above):<br>
-               <input type="number" name="Const" value=86>
-           <br>
-           Filling in holes:<br>
-                <select name="Fill_in" size="2">
-                <option value=1 selected="selected">Yes</option>
-                <option value=2>No</option>
-               </select>
-           <br>
-           <br>
-           <input type="submit" value="Submit">
-          <input type="reset">
+      <h2>Two-connected components</h2>
+		<a href="{% url 'two_cc_desc' %}" class="button">Description</a>
+		<div class="column__block1">
+			<h3>Choose parameters:</h3>
+			   <form method="post" style="text-align: center;" action="{% url 'two_cc' %}">
+				   {% csrf_token %}
+				   <div class="block__row">
+					<label>Channel:</label>
+					   <select name="Channel" size="4">
+						   <option value=1 selected="selected">All</option>
+						   <option value=2 >Red (recommended for bees)</option>
+						   <option value=3 >Green</option>
+							<option value=4 >Blue (recommended for blood cells)</option>
+					  </select>
+					</div>
+					<div class="block__row">
+					<label>Threshold:</label>
+						<select name="Threshold" size="2">
+						   <option value=1 selected="selected">Otsu's threshold</option>
+						   <option value=2 >Const</option>
+					   </select>
+					</div>
+					<div class="block__row">
+					<label>Const (if was choosen above):</label>
+						<input type="number" name="Const" value=86>
+										</div>
+					<div class="block__row">
+					<label>Filling in holes:</label>
+						<select name="Fill_in" size="2">
+							<option value=1 selected="selected">Yes</option>
+							<option value=2>No</option>
+					   </select>
+					 </div>
+			<input type="submit" class="button" value="Submit">
+			<input type="reset" class="button" value = "Reset">
         </form>
+		</div>
 
 
  </div>
 
   <div class="column">
-    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
+    <h2>Segmentation</h2>
 
         {% if segmented_image %}
             <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
@@ -51,8 +56,6 @@
         {% if counter %}
             <p style="text-align: center;">Number of objects: {{ counter }}</p>
         {% endif %}
-
-        <br>
 
         {% if image %}
             <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
@@ -62,18 +65,19 @@
         {% endif %}
 
       {% if segmented_image %}
-      <br>
-      <br>
 
        <form method="post" style="text-align: center;" action="{% url 'save_two_cc' %}">
                {% csrf_token %}
-               Name:<br>
-              <input type="text" name="Name" value='Name'><br>
-               Description:<br>
-              <input type="text" name="Description" value='Description'><br>
-                <br>
-              <input type="submit" value="Submit">
-              <input type="reset">
+				<div class="block__row">
+					<label>Name:</label>
+					<input type="text" name="Name" value='Name'>
+				</div>
+				<div class="block__row">
+					<label>Description:</label>
+					<input type="text" name="Description" value='Description'>
+				</div>
+				<input class="button" type="submit" value="Submit">
+				<input class="button" type="reset" value="Reset">
            {% if unique %}
            <h5 style="color:red">
                Already in base, choose other name!

@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
+ <script>
+ document.title = "Interactive"
+ </script>
 <div class="row">
-  <div class="column">
-      <h2 style="text-align: center;"><strong>Interactive Segmentation</strong></h2>
-       <a href="{% url 'interactive_desc' %}" class="tilelink">
-        <h4>Description</h4>
-      </a>
-      <h4 style="text-align: center;">Load foreground and background samples:</h4>
-
-       <form method="post" style="text-align: center;" enctype="multipart/form-data" action="{% url 'interactive' %}">{% csrf_token %}
-            <p>
+	<div class="column">
+		<h2>Interactive Segmentation</h2>
+		<a href="{% url 'interactive_desc' %}" class="button">Description</a>
+		<div class="column__block1">
+			<h3>Load foreground and background samples:</h3>
+			<form method="post" style="text-align: center;" enctype="multipart/form-data" action="{% url 'interactive' %}">{% csrf_token %}
                 {% csrf_token %}
-                Foreground: <input id="foreground" type="file" class="" name="foreground"><br><br>
-                Background: <input id="background" type="file" class="" name="background">
-            </p>
-            <input type="submit" value="Submit">
-            <input type="reset">
+                <div class="block__row">
+					<label>Foreground:</label>
+					<input id="foreground" type="file" class="" name="foreground">
+				</div>
+				<div class="block__row">
+					<label>Background:<label>
+					<input id="background" type="file" class="" name="background">
+				</div>
+            <input type="submit" class="button" value="Submit">
+            <input type="reset" class="button" value="Reset"">
         </form>
-  </div>
-
-  <div class="column">
-    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
-
+		</div>
+	</div>
+	<div class="column">
+		<h2>Segmentation</h2>
         {% if segmented_image %}
             <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
         {% endif %}
         {% if counter %}
             <p style="text-align: center;">Number of objects: {{ counter }}</p>
         {% endif %}
-
-        <br>
-
         {% if image %}
             <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
         {% else %}
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
-
-  </div>
+	</div>
 </div>
 {% endblock %}
 </html>

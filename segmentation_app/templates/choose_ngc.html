@@ -1,69 +1,64 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
+ <script>
+ document.title = "NGC"
+ </script>
 <div class="row">
-  <div class="column">
-      <h2 style="text-align: center;"><strong>Normalized Graph Cuts</strong></h2>
-      <a href="{% url 'ngc_desc' %}" class="tilelink">
-        <h4>Description</h4>
-      </a>
-      <h3 style="text-align: center;">Choose algorithm type:</h3>
+	<div class="column">
+		<h2>Normalized Graph Cuts</h2>
+		<a href="{% url 'ngc_desc' %}" class="button">Description</a>
+      	<div class="column__block1">
+			<h3>Choose algorithm type:</h3>
+				<form method="post" style="text-align: center;" action="{% url 'choose_ngc' %}">
+				{% csrf_token %}
+				<div class="block__row">
+					<select name="Ball_or_not" size="2">
+						<option value=1 selected="selected">Simple NGC</option>
+						<option value=2>NGC within a ball</option>
+					</select>
+				</div>
+			<input type="submit" class="button" value="Submit">
+			<input type="reset" class="button" value="Reset">
+			</form>
+		</div>
+	</div>
 
-       <form method="post" style="text-align: center;" action="{% url 'choose_ngc' %}">
-           {% csrf_token %}
-	  <select name="Ball_or_not" size="2">
-	    <option value=1 selected="selected">Simple NGC</option>
-	    <option value=2>NGC within a ball</option>
-	  </select><br>
-	<input type="submit" value="Submit">
-          <input type="reset">
-        </form>
-	<br>
-
- </div>
-
-  <div class="column">
-    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
-
+	<div class="column">
+		<h2>Segmentation</h2>
         {% if segmented_image %}
             <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
         {% endif %}
         {% if counter %}
             <p style="text-align: center;">Number of objects: {{ counter }}</p>
         {% endif %}
-
-        <br>
-
         {% if image %}
             <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
         {% else %}
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
-
-      {% if segmented_image %}
-      <br>
-      <br>
-
-       <form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
-               {% csrf_token %}
-               Name:<br>
-              <input type="text" name="Name" value='Name'><br>
-               Description:<br>
-              <input type="text" name="Description" value='Description'><br>
-                <br>
-              <input type="submit" value="Submit">
-              <input type="reset">
-           {% if unique %}
-           <h5 style="color:red">
-               Already in base, choose other name!
-           </h5>
-           {% endif %}
-
-       </form>
-      {% endif %}
-
- </div>
+		{% if segmented_image %}
+			<form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
+				{% csrf_token %}
+				<div class="block__row">
+					<label>Name:</label>
+					<input type="text" name="Name" value='Name'>
+				</div>
+				<div class="block__row">
+					<label>Description:</label>
+					<input type="text" name="Description" value='Description'>
+				</div>
+				<input class="button" type="submit" value="Submit">
+				<input class="button" type="reset" value="Reset">
+				{% if unique %}
+				<h5 style="color:red">
+				   Already in base, choose other name!
+				</h5>
+			   {% endif %}
+			</form>
+		{% endif %}
+	</div>
 </div>
 {% endblock %}
 </html>

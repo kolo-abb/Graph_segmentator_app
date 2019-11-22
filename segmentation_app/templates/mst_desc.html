@@ -1,69 +1,68 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
+ <script>
+ document.title = "MST"
+ </script>
+
 <h2>Minimal Spinning Tree</h2>
 
 <h3>Parameters:</h3>
-
-<h4>Type of graph</h4>
-<p>
-    -8 edges
-    <br>
-    -4 edges
-</p>
-<h4>Threshold function</h4>
-<p>
-    -edge weight + const * 1.0 * sqrt(size of a segment)
-    <br>
-    -edge weight + const * 1.0 / sqrt(size of a segment)
-    <br>
-    -const
-</p>
-<h4>Const</h4>
-<p>
-    Real number
-</p>
-<h4>Minimal segment size</h4>
-<p>
-    Integer
-</p>
-
-<br>
-
+<ul class="list">
+	<li>Type of graph:
+		<ul>
+			<li>8 edges</li>
+			<li>4 edges</li>
+		</ul>
+	</li>
+	<li>Threshold function:
+		<ul>
+			<li>edge weight + const * 1.0 * sqrt(size of a segment)</li>
+			<li>edge weight + const * 1.0 / sqrt(size of a segment)</li>
+			<li>const</li>
+		</ul>
+	</li>
+		<li>Const:
+		<ul>
+			<li>Real number</li>
+		</ul>
+	</li>
+	<li>Minimal segment size:
+		<ul>
+			<li>Integer</li>
+		</ul>
+	</li>
+	
+</ul>
 <h3>Steps:</h3>
-
-<h4>1. Prepare graph</h4>
-<p>
-    a) Create set of width*height (of image) vertices where each vertex corresponding to pixel on image.
-    <br>
-    b) Depending on type of graph argument connect each vertex witch its upper, down left and right neighbors,
-    and maybe oblique neighbors.
-    <br>
-    c) Set weights of edges as eucklidean distances between RGB vectors corresponding to vertices.
-</p>
-<h4>2. Run MST with border function</h4>
-<p>
-    a) Initialise forest where each tree is one vertex from base graph.
-    <br>
-    b) Sort all edges ascending.
-    <br>
-    c) For each edge in that order if adding it wont cause a cycle and its value is less or equal than given
-    threshold function (defined by parameters threshold functions and const) add edge to forest.
-    <br>
-    d) Return forest as segmentation where each segment is a different tree in it.
-</p>
-<h4>3. Reduce noise</h4>
-<p>
-    a) Sort all edges ascending.
-    <br>
-    b) For each edge in that order if adding it wont cause a cycle and at least one of connected by it segments
-    is smaller then parameter minimal segment size add this edge to a forest.
-</p>
-<br>
-<br>
-<br>
-<br>
-<br>
-
+<ol class="list">
+	<li>
+		Prepare graph
+		<ol type="a">
+			<li>Create set of width*height (of image) vertices where each vertex corresponding to pixel on image.</li>
+			<li>Depending on type of graph argument connect each vertex witch its upper, down left and right neighbors,
+			and maybe oblique neighbors.</li>
+			<li>Set weights of edges as eucklidean distances between RGB vectors corresponding to vertices.</li>
+		</ol>
+	</li>
+	<li>
+		Run MST with border function
+		<ol type="a">
+			<li>Initialise forest where each tree is one vertex from base graph.</li>
+			<li>Sort all edges ascending.</li>
+			<li>For each edge in that order if adding it wont cause a cycle and its value is less or equal than given
+			threshold function (defined by parameters threshold functions and const) add edge to forest.</li>
+			<li>Return forest as segmentation where each segment is a different tree in it.</li>
+		</ol>
+	</li>
+	<li>
+		Reduce noise
+		<ol type="a">
+			<li>Sort all edges ascending.</li>
+			<li>For each edge in that order if adding it wont cause a cycle and at least one of connected by it segments
+			is smaller then parameter minimal segment size add this edge to a forest.</li>
+		</ol>
+	</li>
+</ol>
 {% endblock %}
 </html>
