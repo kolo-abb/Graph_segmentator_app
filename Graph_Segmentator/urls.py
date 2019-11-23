@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^choose_alg/', views.choose_alg, name='choose_alg'),
     url(r'^algorithms_desc/', views.algorithms_desc, name='algorithms_desc'),
     url(r'^mst_desc/', views.mst_desc, name='mst_desc'),
+    url(r'^gft_desc/', views.gft_desc, name='gft_desc'),
     url(r'^ngc_desc/', views.ngc_desc, name='ngc_desc'),
     url(r'^two_cc_desc/', views.two_cc_desc, name='two_cc_desc'),
     url(r'^interactive_desc/', views.interactive_desc, name='interactive_desc'),

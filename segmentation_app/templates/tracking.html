@@ -48,7 +48,7 @@
     <h2 style="text-align: center;"><strong>Uploaded video</strong></h2>
 
         {% if video %}
-            <p style="text-align: center;"><video src="{{ video }}" alt=""  /></p>
+            <p style="text-align: center; "><video style="max-width:100%; max-height:100%;" src="{{ video }}" alt=""  /></p>
         {% else %}
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>

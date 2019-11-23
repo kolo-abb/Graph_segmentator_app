@@ -63,3 +63,7 @@ def choose_alg_tracking(request):
 
     return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
 
+
+def gft_desc(request):
+    return render(request, 'gft_desc.html')
+
