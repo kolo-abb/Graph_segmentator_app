@@ -67,3 +67,6 @@ def choose_alg_tracking(request):
 def gft_desc(request):
     return render(request, 'gft_desc.html')
 
+def multi_tracking_desc(request):
+    return render(request, 'multi_tracking_desc.html')
+
