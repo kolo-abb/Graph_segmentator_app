@@ -70,10 +70,10 @@ def two_cc_track(request):
     d = context['d']
     if request.method == 'POST':
         params={
-            'Channel' : int(request.POST.get(int(request.POST.get("Channel")))),
-            'Threshold': int(request.POST.get(int(request.POST.get("Threshold")))),
-            'Const': int(request.POST.get(int(request.POST.get("Const")))),
-            'Fill_in': int(request.POST.get(int(request.POST.get("Fill_in"))))
+            'Channel' : int(request.POST.get("Channel")),
+            'Threshold': int(request.POST.get("Threshold")),
+            'Const': int(request.POST.get("Const")),
+            'Fill_in': int(request.POST.get("Fill_in"))
         }
 
         if name == "local tracking":
@@ -101,10 +101,10 @@ def mst_track(request):
     d = context['d']
     if request.method == 'POST':
         params = {
-            'Edges': int(request.POST.get(int(request.POST.get("Edges")))),
-            'Threshold': int(request.POST.get(int(request.POST.get("Threshold")))),
-            'Const': int(request.POST.get(int(request.POST.get("Const")))),
-            'Min_size': int(request.POST.get(int(request.POST.get("Min_size"))))
+            'Edges': request.POST.get("Edges"),
+            'Threshold': int(request.POST.get("Threshold")),
+            'Const': int(request.POST.get("Const")),
+            'Min_size': int(request.POST.get("Min_size"))
         }
 
         if name == "local tracking":
@@ -132,9 +132,9 @@ def ngc_track(request):
     d = context['d']
     if request.method == 'POST':
         params = {
-            'Algorithm_type': int(request.POST.get(int(request.POST.get("Algorithm_type")))),
-            'Intensivity': int(request.POST.get(int(request.POST.get("Intensivity")))),
-            'Distance': int(request.POST.get(int(request.POST.get("Distance"))))
+            'Algorithm_type': int(request.POST.get("Algorithm_type")),
+            'Intensivity': int(request.POST.get("Intensivity")),
+            'Distance': int(request.POST.get("Distance"))
         }
 
         if name == "local tracking":
@@ -162,7 +162,7 @@ def simple_tr_track(request):
     d = context['d']
     if request.method == 'POST':
         params = {
-            'Treshold': int(request.POST.get(int(request.POST.get("Treshold"))))
+            'Treshold': int(request.POST.get("Treshold"))
         }
 
         if name == "local tracking":
