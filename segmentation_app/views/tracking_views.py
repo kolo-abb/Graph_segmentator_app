@@ -20,6 +20,8 @@ from segmentator.mst_algorithms import threshold_mst_1, threshold_mst_2, thresho
 from segmentation_app.views.segmentation_views import context
 from tracker import main_api
 
+available_segmentation_methods = ['two_cc', 'mst', 'ngc', 'simple_threshold', 'watershed']
+available_tracking_algorithms = ['local_tracking', 'active_colloids_tracking']
 
 def tracking(request):
     if request.method == 'POST':
@@ -42,24 +44,44 @@ def tracking(request):
 @ensure_csrf_cookie
 def choose_alg_tracking(request):
     if request.method == 'POST':
-        name = request.POST.get("algos")
+        tracking_algorithm = request.POST.get("tracking_algorithm")
+
+        segmentation_method = request.POST.get("segmentation_method")
+
+        if segmentation_method not in available_segmentation_methods:
+            return HttpResponseForbidden('Invalid segmentation method.')
+        
+        if tracking_algorithm not in available_tracking_algorithms:
+            return HttpResponseForbidden('Invalid tracking algorithm')
+
         n_frames = int(request.POST.get("n_frames"))
+
         a = int(request.POST.get("a"))
         b = int(request.POST.get("b"))
         c = int(request.POST.get("c"))
         d = int(request.POST.get("d"))
-        if name == "local tracking": ## local, poprawic
-            video = cv2.VideoCapture('static/media/temp_video.mp4')
-            video_out = main_api.tracking_local(video,n_frames,(a,b,c,d))
-            context['video_out'] = '/' + video_out
-            return render(request, 'local_video.html', context)
-        elif name == 'active colloids tracking':
-            video = cv2.VideoCapture('static/media/temp_video.mp4')
-            video_out = main_api.active_colloids_tracking(video, n_frames, (a,b,c,d))
-            context['video_out'] = '/' + video_out
-            return render(request, 'local_video.html', context)
-        else:
-            return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+
+        if segmentation_method == 'two_cc':
+            pass
+        elif segmentation_method == 'mst':
+            pass
+        elif segmentation_method == 'ngc':
+            pass
+        elif segmentation_method == 'simple_threshold':
+            pass
+        elif segmentation_method == 'watershed':
+            pass
+        
+        video = cv2.VideoCapture('static/media/temp_video.mp4')
+        frames = main_api.prepare_frames(video, n_frames, (a, b, c, d))
+
+        if tracking_algorithm == "local_tracking":
+            video_out = main_api.tracking_local(frames)
+        elif tracking_algorithm == 'active_colloids_tracking':
+            video_out = main_api.active_colloids_tracking(frames)
+            
+        context['video_out'] = '/' + video_out
+        return render(request, 'local_video.html', context)
 
     return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
 
