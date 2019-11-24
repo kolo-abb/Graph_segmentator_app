@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="column">
+      <h2 style="text-align: center;">Upload video</h2>
+
+      <form style="text-align: center;"  method="post" enctype="multipart/form-data">{% csrf_token %}
+        <p>
+            {% csrf_token %}
+            <input id="id_video" type="file" class="" name="video">
+        </p>
+            <input type="submit" value="Submit" />
+      </form>
+
+      <br>
+      <br>
+
+      <h2 style="text-align: center;">Choose the algorithm and the output format</h2>
+        <form style="text-align: center;" method="post" action="{% url 'choose_alg_tracking' %}">
+            {% csrf_token %}
+          <select name="algos" size="2">
+              <option value="local tracking" selected="selected">Multi-Object Tracking with Graph Matching</option>
+              <option value="active colloids tracking" >Global Flow Tracking</option>
+          </select>
+            <br>
+            <br>
+            {% csrf_token %}
+          <select name="segm" size="5">
+              <option value="two_cc"selected="selected" >Two-Connected Components</option>
+              <option value="mst">Minimal Spanning Tree</option>
+              <option value="ngc" >Normalized Graph Cuts</option>
+              <option value="simple_tr" >Simple Threshold</option>
+          </select>
+            <br>
+            <br>
+            Number of frames in the output:<br>
+            <input type="number" name="n_frames" value=50>
+            <br>
+            <br>
+            Area to analyze (x1,y1,x2,y2):
+            <br>
+            <input type="number" name="a" value=0><br>
+            <input type="number" name="b" value=250><br>
+            <input type="number" name="c" value=500><br>
+            <input type="number" name="d" value=430><br>
+          <br><br>
+            {% if video %}
+            <input type="submit" value="Submit">
+            {% else %}
+            <input type="submit" value="Submit" disabled>
+            {% endif %}
+        </form>
+
+
+  </div>
+
+  <div class="column">
+    <h2 style="text-align: center;"><strong>Uploaded video</strong></h2>
+
+        {% if video %}
+            <p style="text-align: center; "><video style="max-width:100%; max-height:100%;" src="{{ video }}" alt=""  /></p>
+        {% else %}
+            {% load static %}
+            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+        {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+</html>
+<!--<html>-->
+<!--<head>-->
+<!--<meta charset="UTF-8">-->
+<!--<title>Upload Videos</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>Video Uploader</h1>-->
+<!--<form enctype="multipart/form-data" method="POST" action="">-->
+<!--{% csrf_token %}-->
+<!--{{ form.as_p }}-->
+<!--<input type="submit" value="Upload"/>-->
+<!--</form>-->
+
+<!--<br><br>-->
+<!--<video width='400' controls>-->
+<!--<source src='{{ MEDIA_URL }}{{ videofile }}' type='video/mp4'>-->
+<!--Your browser does not support the video tag.-->
+<!--</video>-->
+<!--<br><br>-->
+<!--</p>-->
+
+<!--</body>-->
+<!--<script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'p3plcpnl0769'}) // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><script src='https://img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'></script><script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'p3plcpnl0769'}) // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><script src='https://img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'></script></html>-->
