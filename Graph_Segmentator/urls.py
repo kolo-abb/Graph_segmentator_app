@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^save_ball_ngc/', views.save_ball_ngc, name='save_ball_ngc'),
     url(r'^save_two_cc/', views.save_two_cc, name='save_two_cc'),
     url(r'^save_interactive/', views.save_interactive, name='save_interactive'),
+    url(r'^save_video/', views.save_video, name='save_video'),
     url(r'^load_segmentation/', views.load_segmentation, name='load_segmentation'),
     url(r'^choose_alg_tracking/', views.choose_alg_tracking, name='choose_alg_tracking'),
     url(r'^multi_tracking_desc/', views.multi_tracking_desc, name='multi_tracking_desc'),

@@ -70,3 +70,11 @@ def gft_desc(request):
 def multi_tracking_desc(request):
     return render(request, 'multi_tracking_desc.html')
 
+def save_video(request):
+    video_base = convertToBinaryData('static/media/temp_video.mp4')
+    video_out = convertToBinaryData(BASE_DIR + context['video_out'])
+    name = request.POST.get("Name")
+    description = request.POST.get("Description")
+
+    connector.save_video(video_base,video_out,name,description)
+    return render(request, 'home.html')
