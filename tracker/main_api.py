@@ -8,7 +8,7 @@ from tracker.active_colloids_utils import active_colloids_tracking_pipeline
 
 num_cores=1
 
-def tracking_local(vidcap, n_frames=50, window=(0, 250, 500, 430)):
+def tracking_local(vidcap, n_frames=50, window=(0, 250, 500, 430), segmentation='two_cc', params={}):
     success,image = vidcap.read()
     count = 0
     while success:
@@ -40,7 +40,7 @@ def tracking_local(vidcap, n_frames=50, window=(0, 250, 500, 430)):
     tracking_movie.release()
     return pathOut
 
-def active_colloids_tracking(vidcap, n_frames=50, window=(0, 250, 500, 430)):
+def active_colloids_tracking(vidcap, n_frames=50, window=(0, 250, 500, 430), segmentation='two_cc', params={}):
     success,image = vidcap.read()
     count = 0
     while success:

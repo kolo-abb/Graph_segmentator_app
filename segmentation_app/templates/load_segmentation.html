@@ -16,7 +16,7 @@
 	</form>
 <br>
 <h2>Trackings:</h2>
-    <form style="text-align: center;" method="post" action="{% url 'load_segmentation' %}">
+    <form style="text-align: center;" method="post" action="{% url 'load_tracking' %}">
         {% csrf_token %}
         <select name="tracking" size="10">
             {% for item in data_tr %}

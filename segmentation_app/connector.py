@@ -88,7 +88,7 @@ def load_all():
     cur.execute('select * from Segmentations ')
     data = cur.fetchall()
     conn.close()
-    return data;
+    return data
 
 def load_all_video():
     conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
@@ -96,7 +96,7 @@ def load_all_video():
     cur.execute('select * from Tracking ')
     data = cur.fetchall()
     conn.close()
-    return data;
+    return data
 
 
 def load_segmentation(name,type_segmentation):
@@ -119,5 +119,21 @@ def load_segmentation(name,type_segmentation):
     data = list(cur.fetchall()[0])[1:]
     all_info['parameters']=data
     conn.close()
-    return all_info;
+    return all_info
 
+def load_tracking(name):
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
+    cur = conn.cursor()
+    all_info = {}
+    cur.execute('select description,Base_video,Video_tracking from Tracking where name=?', (name))
+    data = cur.fetchall()
+    all_info['description'] = data[0][0]
+    print(BASE_DIR)
+    all_info['tracking_name'] = '/static/media/temporary_new_video.mp4'
+    all_info['base_name'] = '/static/media/temporary_video.mp4'
+
+    writeTofile(data[0][2], BASE_DIR + all_info['tracking_name'])
+    writeTofile(data[0][1], BASE_DIR + all_info['base_name'])
+
+    conn.close()
+    return all_info

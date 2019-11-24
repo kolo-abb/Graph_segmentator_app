@@ -329,10 +329,10 @@ def interactive_desc(request):
 
 
 def load_segmentation(request):
-    data =connector.load_all();
+    data =connector.load_all()
     context_dic = {'data' : data}
 
-    data_tr = connector.load_all_video();
+    data_tr = connector.load_all_video()
     context_dic['data_tr'] = data_tr
 
     if request.method == 'POST':
