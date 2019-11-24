@@ -4,7 +4,7 @@ from segmentator.mst_algorithms import threshold_mst_1, mst_segmentation_1const,
     get_segmented_image, count_objects,  mst_segmentation_1const_additional
 from segmentator.two_cc_algorithms import converting_to_binary, reject_comp, get_components, get_result_random
 from segmentator.preprocessing import prepare_graph, define_nodes, abs_value, define_edges, creating_graph, preparing_image
-from segmentator.preprocessing import create_cut_matrix, ball_cut_matrix, norm, ngc_set_capacity, find_median
+from segmentator.preprocessing import create_cut_matrix, norm, ngc_set_capacity, find_median
 from segmentator.ngc_algorithms import ngc_open_image, ngc_get_image_arr, ngc_get_treshold, ngc_threshold_image, \
      ngc_colour_binary_image, ngc_count_objects, ngc_find_outliners, ngc_remove_banned_objects, ngc_segmented_image
 from segmentator.interactive_algorithm import *
@@ -53,17 +53,6 @@ def basic_ngc(img, I, X):
     
     return ngc_segmented_image(threshold_result), counter
 
-def basic_ball_ngc(img, I, X, radius):
-    
-    image = ngc_open_image(img)
-    image_arr = ngc_get_image_arr(image)
-    M = ball_cut_matrix(image_arr, I, X, radius)
-    N, T = ngc_get_treshold(M)
-    threshold_result = ngc_threshold_image(image_arr, T)
-    colours, colour_result = ngc_colour_binary_image(threshold_result)
-    counter = ngc_count_objects(colour_result)
-    
-    return ngc_segmented_image(threshold_result), counter
 
 def advanced_ngc(img, I, X):
     
@@ -79,23 +68,8 @@ def advanced_ngc(img, I, X):
     
     return ngc_segmented_image(result), counter
 
-def advanced_ball_ngc(img, I, X, radius):
-    
-    image = ngc_open_image(img)
-    image_arr = ngc_get_image_arr(image)
-    M = ball_cut_matrix(image_arr, I, X, radius)
-    N, T = ngc_get_treshold(M)
-    threshold_result = ngc_threshold_image(image_arr, T)
-    colours, colour_result = ngc_colour_binary_image(threshold_result)
-    outliners = ngc_find_outliners(colours)
-    result = ngc_remove_banned_objects(colour_result, outliners)
-    counter = ngc_count_objects(result)
-    
-    return ngc_segmented_image(result), counter
-
 
 def interactive(original_image, foreground, background):
-
     segmented_image = image_processing_pipeline(original_image, foreground, background)
     counter = 0
 
