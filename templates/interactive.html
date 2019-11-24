@@ -20,25 +20,34 @@
 					<label>Background:<label>
 					<input id="background" type="file" class="" name="background">
 				</div>
-            <input type="submit" class="button" value="Submit">
-            <input type="reset" class="button" value="Reset"">
+            <input type="submit" class="button" value="Submit" onclick="$('#loading').show();">
+            <input type="reset" class="button" value="Reset">
         </form>
 		</div>
 	</div>
 	<div class="column">
 		<h2>Segmentation</h2>
-        {% if segmented_image %}
-            <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
-        {% endif %}
-        {% if counter %}
-            <p style="text-align: center;">Number of objects: {{ counter }}</p>
-        {% endif %}
-        {% if image %}
-            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
-        {% else %}
-            {% load static %}
-            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
-        {% endif %}
+			{% if image %}
+				Original image:
+				<br>
+				<p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+			
+				{% else %}
+				{% load static %}
+				<p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+			{% endif %}
+			
+			{% if segmented_image %}
+				Segmented image:
+				<br>
+            	<p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        	{% else %}
+				<div id="loading" style="display:none;">
+					Loading!
+					<br>
+					<img src="/static/images/tenor.gif" alt="" /></div>
+				<br>
+			{% endif %}
 	</div>
 </div>
 {% endblock %}

@@ -31,7 +31,7 @@
 					<label>Sensivity regarding pixels' spatial location:<label>
 						  <input type="number" name="Distance" value=4>
 				</div>
-				<input type="submit" class="button" value="Submit">
+				<input type="submit" class="button" value="Submit" onclick="$('#loading').show();">
 				<input type="reset" class="button" value="Reset">
 			</form>
 		</div>
@@ -41,6 +41,7 @@
 
 	<div class="column">
 		<h2>Segmentation</h2>
+		<div id="loading" style="display:none;"><img src="/static/images/tenor.gif" alt="" />Loading!</div>
         {% if segmented_image %}
             <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
         {% endif %}
