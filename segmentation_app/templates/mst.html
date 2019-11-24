@@ -74,19 +74,31 @@
 
 	<div class="column">
 		<h2>Segmentation</h2>
-				<div id="loading" style="display:none;"><img src="/static/images/tenor.gif" alt="" />Loading!</div>
-        {% if segmented_image %}
-            <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
-        {% endif %}
+			{% if image %}
+				Original image:
+				<br>
+				<p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+			
+				{% else %}
+				{% load static %}
+				<p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+			{% endif %}
+			
+			{% if segmented_image %}
+				Segmented image:
+				<br>
+            	<p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        	{% else %}
+				<div id="loading" style="display:none;">
+					Loading!
+					<br>
+					<img src="/static/images/tenor.gif" alt="" /></div>
+				<br>
+			{% endif %}
         {% if counter %}
             <p style="text-align: center;">Number of objects: {{ counter }}</p>
         {% endif %}
-        {% if image %}
-            <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
-        {% else %}
-            {% load static %}
-            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
-        {% endif %}
+
 		{% if segmented_image %}
 			<form method="post" style="text-align: center;" action="{% url 'save_mst' %}">
 				{% csrf_token %}
