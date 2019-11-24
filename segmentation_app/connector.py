@@ -125,7 +125,7 @@ def load_tracking(name):
     conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
     cur = conn.cursor()
     all_info = {}
-    cur.execute('select description,Base_video,Video_tracking from Tracking where name=?', (name))
+    cur.execute('select description,Base_video,Video_out from Tracking where name=?', (name,))
     data = cur.fetchall()
     all_info['description'] = data[0][0]
     print(BASE_DIR)
