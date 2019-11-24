@@ -12,6 +12,24 @@
 <!--            {% load static %}-->
 <!--            <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>-->
 <!--        {% endif %}-->
-
+			<form method="post" style="text-align: center;" action="{% url 'save_video' %}">
+				{% csrf_token %}
+				<div class="block__row">
+					<label>Name:</label>
+					<input type="text" name="Name" value='Name'>
+				</div>
+				<div class="block__row">
+					<label>Description:</label>
+					<textarea rows="7">{{ description }}</textarea>
+				</div>
+				<input class="button" type="submit" value="Submit">
+				<input class="button" type="reset" value="Reset">
+				{% if unique %}
+					<h5 style="color:red">
+						Already in base, choose other name!
+					</h5>
+				{% endif %}
+			</form>
 {% endblock %}
 </html>
+

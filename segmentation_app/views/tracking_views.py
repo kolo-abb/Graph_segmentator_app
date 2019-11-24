@@ -63,3 +63,18 @@ def choose_alg_tracking(request):
 
     return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
 
+
+def gft_desc(request):
+    return render(request, 'gft_desc.html')
+
+def multi_tracking_desc(request):
+    return render(request, 'multi_tracking_desc.html')
+
+def save_video(request):
+    video_base = convertToBinaryData('static/media/temp_video.mp4')
+    video_out = convertToBinaryData(BASE_DIR + context['video_out'])
+    name = request.POST.get("Name")
+    description = request.POST.get("Description")
+
+    connector.save_video(video_base,video_out,name,description)
+    return render(request, 'home.html')

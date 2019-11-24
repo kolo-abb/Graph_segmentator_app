@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 import django
 import io
-
+import threading
 from Graph_Segmentator.settings import BASE_DIR
 from segmentator import main_api as seg
 from segmentation_app import connector
@@ -64,7 +64,6 @@ def mst(request):
         const=float(request.POST.get("Const"))
         min_size=int(request.POST.get("Min_size"))
         threshold=int(request.POST.get("Threshold"))
-
         if threshold==1:
             result= seg.mst_1const(Image.open(BASE_DIR+context['image']), edges_8=edges8,
                                             threshold=threshold_mst_1,

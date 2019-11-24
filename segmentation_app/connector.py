@@ -66,6 +66,18 @@ def save_two_cc(img_base,img_segmented,name,description,channel,threshold,fillin
 
     conn.close()
 
+
+def save_video(video_base,video_out,name,description):
+
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
+    cur = conn.cursor()
+    cur.execute('INSERT INTO Tracking (Name,Description,Base_video,Video_out)'
+                ' VALUES (?, ?,?,?);',(name,description,video_base,video_out))
+
+    conn.commit()
+
+    conn.close()
+
 def save_interactive(img_base,img_segmented,name,description,counter=0):
     return None
 

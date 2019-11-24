@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% block content %}
+ <script>
+ document.title = "NGC"
+ </script>
 <div class="row">
   <div class="column">
-      <h2 style="text-align: center;"><strong>Normalized Graph Cuts</strong></h2>
-       <a href="{% url 'ngc_desc' %}" class="tilelink">
-        <h4>Description</h4>
-      </a>
-      <h3 style="text-align: center;">Choose parameters:</h3>
-
-       <form method="post" style="text-align: center;" action="{% url 'ngc' %}">
-           {% csrf_token %}
-	  Type of algorithm:<br>
-	  <select name="Algorithm_type" size="2">
-          {% if type == 1 %}
-	    <option value=1 selected="selected">Basic (simple segmentation and object counting)</option>
-	    <option value=2>Advanced (+ removal of outlined objects)</option>
-          {% else %}
-          <option value=1 >Basic (simple segmentation and object counting)</option>
-	    <option value=2 selected="selected">Advanced (+ removal of outlined objects)</option>
-          {% endif %}
-	  </select><br><br>
-          Sensivity regarding pixels' intensivity:<br>
-	  <input type="number" name="Intensivity" value={{sensivity}}>
-	  <br><br>
-          Sensivity regarding pixels' spatial location:<br>
-          <input type="number" name="Distance" value={{sensivity_loc}}><br>
-          <input type="submit" value="Submit">
-          <input type="reset">
-	<br>
-        </form>
+      <h2>Normalized Graph Cuts</h2>
+		<a href="{% url 'ngc_desc' %}" class="button">Description</a>
+      	<div class="column__block1">
+			<h3>Choose parameters:</h3>
+			<form method="post" style="text-align: center;" action="{% url 'ngc' %}">
+				{% csrf_token %}
+				<div class="block__row">
+					Type of algorithm:
+					  <select name="Algorithm_type" size="2">
+						  {% if type == 1 %}
+						<option value=1 selected="selected">Basic (simple segmentation and object counting)</option>
+						<option value=2>Advanced (+ removal of outlined objects)</option>
+						  {% else %}
+						  <option value=1 >Basic (simple segmentation and object counting)</option>
+						<option value=2 selected="selected">Advanced (+ removal of outlined objects)</option>
+						  {% endif %}
+					  </select>
+				</div>
+				<div class="block__row">
+					Sensivity regarding pixels' intensivity:
+					  <input type="number" name="Intensivity" value={{sensivity}}>
+				</div>
+				<div class="block__row">
+					Sensivity regarding pixels' spatial location:
+					<input type="number" name="Distance" value={{sensivity_loc}}>
+					<input type="submit" class="button" value="Submit">
+					<input type="reset" class="button" value="Reset">
+				</div>
+			</form>
        {% if segmented_image %}
        {% endif %}
   </div>
 
   <div class="column">
-    <h2 style="text-align: center;"><strong>Segmentation</strong></h2>
+    <h2>Segmentation</h2>
 
         {% if segmented_image %}
             <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
@@ -43,8 +48,6 @@
         {% if counter %}
             <p style="text-align: center;">Number of objects: {{ counter }}</p>
         {% endif %}
-
-        <br>
 
         {% if image %}
             <p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
@@ -54,16 +57,17 @@
         {% endif %}
 
       {% if segmented_image %}
-      <br>
-      <br>
 
        <form method="post" style="text-align: center;" action="{% url 'save_ngc' %}">
                {% csrf_token %}
-               Name:<br>
-              <input type="text" name="Name" value='{{ name }}' readonly><br>
-               Description:<br>
-              <input type="text" name="Description" value='{{ description }}' readonly><br>
-                <br>
+				<div class="block__row">
+					<label>Name:</label>
+					<input type="text" name="Name" value='{{ name }}' readonly>
+				</div>
+				<div class="block__row">
+					<label>Description:</label>
+					<textarea readonly rows="7">{{ description }}</textarea>
+				</div>			  
        </form>
       {% endif %}
 

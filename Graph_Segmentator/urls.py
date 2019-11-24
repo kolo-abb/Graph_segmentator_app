@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^choose_alg/', views.choose_alg, name='choose_alg'),
     url(r'^algorithms_desc/', views.algorithms_desc, name='algorithms_desc'),
     url(r'^mst_desc/', views.mst_desc, name='mst_desc'),
+    url(r'^gft_desc/', views.gft_desc, name='gft_desc'),
     url(r'^ngc_desc/', views.ngc_desc, name='ngc_desc'),
     url(r'^two_cc_desc/', views.two_cc_desc, name='two_cc_desc'),
     url(r'^interactive_desc/', views.interactive_desc, name='interactive_desc'),
@@ -43,8 +44,10 @@ urlpatterns = [
     url(r'^save_ball_ngc/', views.save_ball_ngc, name='save_ball_ngc'),
     url(r'^save_two_cc/', views.save_two_cc, name='save_two_cc'),
     url(r'^save_interactive/', views.save_interactive, name='save_interactive'),
+    url(r'^save_video/', views.save_video, name='save_video'),
     url(r'^load_segmentation/', views.load_segmentation, name='load_segmentation'),
     url(r'^choose_alg_tracking/', views.choose_alg_tracking, name='choose_alg_tracking'),
+    url(r'^multi_tracking_desc/', views.multi_tracking_desc, name='multi_tracking_desc'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
