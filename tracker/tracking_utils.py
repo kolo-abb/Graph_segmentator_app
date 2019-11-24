@@ -8,7 +8,7 @@ from PIL import Image
 from joblib import Parallel, delayed
 from scipy import ndimage
 import matplotlib.pyplot as plt
-from tracker import two_cc
+from tracker import two_cc, simple_segmentation
 import math
 
 
@@ -245,32 +245,39 @@ class Matching:
 
 
 
-def pipeline_final(start_frame, end_frame, concurrent=True,frames=[],num_cores=1):
-    print(frames)
-    print(len(frames))
+def pipeline_final(frames, segmentation_method):
 
-
-    width, height = math.ceil(frames[0].size[0]/8), math.ceil(frames[0].size[1]/8)
-    diameter = math.sqrt(width**2 + height**2)
+    width, height = math.ceil(frames[0].size[0] / 8), math.ceil(frames[0].size[1] / 8)
+    diameter = math.sqrt(width ** 2 + height ** 2)
     color = colors(width, height)
-    segment, blocks, count_boxes, list_boxes, FD, matchings = [], [] ,[], [], [], []
+    segments, blocks, count_boxes, list_boxes, FD, matchings = [], [] ,[], [], [], []
+    start_frame = 0
+    end_frame = len(frames)
+    num_cores = multiprocessing.cpu_count()
     for i in range(start_frame):
-        segment.append(None)
+        segments.append(None)
         blocks.append(None)
         count_boxes.append(None)
         list_boxes.append(None)
         FD.append(None)
         matchings.append(None)
+
     start = time.time()
-    if concurrent:
-        segment = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(start_frame, end_frame))
-    else:
-        for i in range(start_frame, end_frame):
-            segment.append(two_cc.two_connected_components(frames[i],channel="red",thresh=86))
+    if segmentation_method == 'two_cc':
+        segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(start_frame, end_frame))
+    elif segmentation_method == 'mst':
+        pass
+    elif segmentation_method == 'ngc':
+        pass
+    elif segmentation_method == 'watershed':
+        segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(len(frames)))
+    elif segmentation_method == 'simple_threshold':
+        pass
     end = time.time()
     print('elapsed seconds:', end - start)
+    
     for i in range(start_frame, end_frame):
-        blocks.append(construct_blocks(segment[i]))
+        blocks.append(construct_blocks(segments[i]))
         count_boxes_, list_boxes_ = connected_blocks(blocks[i])
         count_boxes.append(count_boxes_)
         list_boxes.append(list_boxes_)

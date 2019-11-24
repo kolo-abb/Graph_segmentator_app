@@ -143,11 +143,22 @@ def get_frame_mass_centers(frame):
     labels = measure.label(frame_arr)
     return get_all_mass_centers(labels)
 
-def active_colloids_tracking_pipeline(segments):
+def active_colloids_tracking_pipeline(frames, segmentation_method):
     G = nx.DiGraph()
-    
+    num_frames = len(frames)
     num_cores = multiprocessing.cpu_count()
-    num_frames = len(segments)
+
+    if segmentation_method == 'two_cc':
+        segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(len(frames)))
+    elif segmentation_method == 'mst':
+        pass
+    elif segmentation_method == 'ngc':
+        pass
+    elif segmentation_method == 'watershed':
+        segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(len(frames)))
+    elif segmentation_method == 'simple_threshold':
+        pass
+    
     all_mass_centers = []
     all_mass_centers = Parallel(n_jobs=num_cores)(delayed(get_frame_mass_centers)(segments[i]) for i in range(num_frames))
     
