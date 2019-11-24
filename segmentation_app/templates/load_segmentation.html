@@ -4,11 +4,23 @@
  <script>
  document.title = "Saved Analysis"
  </script>
+<h2>Segmentations:</h2>
     <form style="text-align: center;" method="post" action="{% url 'load_segmentation' %}">
         {% csrf_token %}
         <select name="segmentations" size="10">
             {% for item in data %}
                 <option value={{item.1}}:{{item.5}} selected="selected">{{item.1}} -{{item.5}} </option>
+            {% endfor %}
+        </select>
+        <input class="button" type="submit" value="Choose">
+	</form>
+<br>
+<h2>Trackings:</h2>
+    <form style="text-align: center;" method="post" action="{% url 'load_segmentation' %}">
+        {% csrf_token %}
+        <select name="tracking" size="10">
+            {% for item in data_tr %}
+                <option value={{item.1}}:{{item.2}} selected="selected">{{item.1}} -{{item.2}} </option>
             {% endfor %}
         </select>
         <input class="button" type="submit" value="Choose">

@@ -90,6 +90,14 @@ def load_all():
     conn.close()
     return data;
 
+def load_all_video():
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
+    cur = conn.cursor()
+    cur.execute('select * from Tracking ')
+    data = cur.fetchall()
+    conn.close()
+    return data;
+
 
 def load_segmentation(name,type_segmentation):
     conn = sqlite3.connect(os.path.join(BASE_DIR, 'db.sqlite3'))
