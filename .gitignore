@@ -1,1 +1,6 @@
 *.pyc
+tracker/__pycache__/
+Graph_Segmentator/__pycache__/
+static/media/temp_vid/
+segmentator/__pycache__/
+static/media/matched

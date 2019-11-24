@@ -16,7 +16,7 @@
       <br>
       <br>
 
-      <h2 style="text-align: center;">Choose algorithm and output format</h2>
+      <h2 style="text-align: center;">Choose the algorithm and the output format</h2>
         <form style="text-align: center;" method="post" action="{% url 'choose_alg_tracking' %}">
             {% csrf_token %}
           <select name="algos" size="2">
@@ -24,18 +24,21 @@
               <option value="active colloids tracking" >Global Flow Tracking</option>
           </select>
             <br>
+            <br>
             {% csrf_token %}
           <select name="segm" size="5">
-              <option value="two_cc"selected="selected" >Two Connected Components</option>
+              <option value="two_cc"selected="selected" >Two-Connected Components</option>
               <option value="mst">Minimal Spanning Tree</option>
-              <option value="ngc" >Normalised Graph Cuts</option>
-              <option value="simple_tr" >Simple Treshold</option>
+              <option value="ngc" >Normalized Graph Cuts</option>
+              <option value="simple_tr" >Simple Threshold</option>
           </select>
             <br>
-            Number of frames in output:<br>
+            <br>
+            Number of frames in the output:<br>
             <input type="number" name="n_frames" value=50>
             <br>
-            Area to analyse (x1,y1,x2,y2):
+            <br>
+            Area to analyze (x1,y1,x2,y2):
             <br>
             <input type="number" name="a" value=0><br>
             <input type="number" name="b" value=250><br>
