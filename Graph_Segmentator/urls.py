@@ -46,10 +46,10 @@ urlpatterns = [
     url(r'^load_tracking/', views.load_tracking, name='load_tracking'),
     url(r'^choose_alg_tracking/', views.choose_alg_tracking, name='choose_alg_tracking'),
     url(r'^multi_tracking_desc/', views.multi_tracking_desc, name='multi_tracking_desc'),
-    url(r'^two_cc_track/', views.two_cc_track, name='two_cc_track'),
-    url(r'^mst_track/', views.mst_track, name='mst_track'),
-    url(r'^ngc_track/', views.ngc_track, name='ngc_track'),
-    url(r'^simple_tr_track/', views.simple_tr_track, name='simple_tr_track'),
+    # url(r'^two_cc_track/', views.two_cc_track, name='two_cc_track'),
+    # url(r'^mst_track/', views.mst_track, name='mst_track'),
+    # url(r'^ngc_track/', views.ngc_track, name='ngc_track'),
+    # url(r'^simple_tr_track/', views.simple_tr_track, name='simple_tr_track'),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

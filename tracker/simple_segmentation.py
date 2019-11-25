@@ -38,4 +38,4 @@ def simple_segmentation(image):
     bw = gray.point(lambda x: 0 if x < 100 else 255, '1')
     arr = 1 - np.array(bw)
     labels = measure.label(arr)
-    return drop_invalid_objects(labels, lower_threshold=100, upper_threshold=1200)
+    return np.array(drop_invalid_objects(labels, lower_threshold=100, upper_threshold=1200), dtype='int16')

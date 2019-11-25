@@ -20,6 +20,8 @@ from segmentator.mst_algorithms import threshold_mst_1, threshold_mst_2, thresho
 from segmentation_app.views.segmentation_views import context
 from tracker import main_api
 
+available_segmentation_methods = ['two_cc', 'simple_threshold', 'watershed']
+available_tracking_algorithms = ['local_tracking', 'active_colloids_tracking']
 
 def tracking(request):
     if request.method == 'POST':
@@ -42,52 +44,33 @@ def tracking(request):
 @ensure_csrf_cookie
 def choose_alg_tracking(request):
     if request.method == 'POST':
-        context['name'] = request.POST.get("algos")
-        context['n_frames'] = int(request.POST.get("n_frames"))
-        context['a'] = int(request.POST.get("a"))
-        context['b'] = int(request.POST.get("b"))
-        context['c'] = int(request.POST.get("c"))
-        context['d'] = int(request.POST.get("d"))
-        segmentation = request.POST.get("segm")
-        if segmentation == "two_cc":
-            return render(request, 'two_cc_track.html', context)
-        elif segmentation == "mst":
-            return render(request, 'mst_track.html', context)
-        elif segmentation == "ngc":
-            return render(request, 'ngc_track.html', context)
-        elif segmentation == "simple_tr":
-            return render(request, 'simple_tr_track.html', context)
+        tracking_algorithm = request.POST.get("tracking_algorithm")
 
-    return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+        segmentation_method = request.POST.get("segmentation_method")
 
+        if segmentation_method not in available_segmentation_methods:
+            return HttpResponseForbidden('Invalid segmentation method.')
+        
+        if tracking_algorithm not in available_tracking_algorithms:
+            return HttpResponseForbidden('Invalid tracking algorithm')
 
-def two_cc_track(request):
-    name = context['name']
-    n_frames = context['n_frames']
-    a = context['a']
-    b = context['b']
-    c = context['c']
-    d = context['d']
-    if request.method == 'POST':
-        params={
-            'Channel' : int(request.POST.get("Channel")),
-            'Threshold': int(request.POST.get("Threshold")),
-            'Const': int(request.POST.get("Const")),
-            'Fill_in': int(request.POST.get("Fill_in"))
-        }
+        n_frames = int(request.POST.get("n_frames"))
 
-        if name == "local tracking":
-            video = cv2.VideoCapture('static/media/temp_video.mp4')
-            video_out = main_api.tracking_local(video,n_frames,(a,b,c,d), 'two_cc', params)
-            context['video_out'] = '/' + video_out
-            return render(request, 'local_video.html', context)
-        elif name == 'active colloids tracking':
-            video = cv2.VideoCapture('static/media/temp_video.mp4')
-            video_out = main_api.active_colloids_tracking(video, n_frames, (a,b,c,d), 'two_cc', params)
-            context['video_out'] = '/' + video_out
-            return render(request, 'local_video.html', context)
-        else:
-            return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
+        a = int(request.POST.get("a"))
+        b = int(request.POST.get("b"))
+        c = int(request.POST.get("c"))
+        d = int(request.POST.get("d"))
+        
+        video = cv2.VideoCapture('static/media/temp_video.mp4')
+        frames = main_api.prepare_frames(video, n_frames, (a, b, c, d))
+
+        if tracking_algorithm == "local_tracking":
+            video_out = main_api.tracking_local(frames, segmentation_method)
+        elif tracking_algorithm == 'active_colloids_tracking':
+            video_out = main_api.active_colloids_tracking(frames, segmentation_method)
+            
+        context['video_out'] = '/' + video_out
+        return render(request, 'local_video.html', context)
 
     return HttpResponseForbidden('Something is wrong, check if you filled all required positions!')
 

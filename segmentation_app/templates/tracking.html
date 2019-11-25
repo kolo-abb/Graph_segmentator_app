@@ -19,18 +19,19 @@
       <h2 style="text-align: center;">Choose the algorithm and the output format</h2>
         <form style="text-align: center;" method="post" action="{% url 'choose_alg_tracking' %}">
             {% csrf_token %}
-          <select name="algos" size="2">
-              <option value="local tracking" selected="selected">Multi-Object Tracking with Graph Matching</option>
-              <option value="active colloids tracking" >Global Flow Tracking</option>
+          <select name="tracking_algorithm" size="2">
+              <option value="local_tracking" selected="selected">Multi-Object Tracking with Graph Matching</option>
+              <option value="active_colloids_tracking" >Global Flow Tracking</option>
           </select>
             <br>
             <br>
             {% csrf_token %}
-          <select name="segm" size="5">
-              <option value="two_cc"selected="selected" >Two-Connected Components</option>
-              <option value="mst">Minimal Spanning Tree</option>
-              <option value="ngc" >Normalized Graph Cuts</option>
-              <option value="simple_tr" >Simple Threshold</option>
+          <select name="segmentation_method" size="5">
+              <option value="two_cc" selected="selected" >Two-Connected Components</option>
+              <!-- <option value="mst">Minimal Spanning Tree</option>
+              <option value="ngc" >Normalized Graph Cuts</option> -->
+              <option value="watershed" >Watershed Method</option>
+              <!-- <option value="simple_threshold" >Simple Threshold</option> -->
           </select>
             <br>
             <br>

@@ -143,24 +143,23 @@ def get_frame_mass_centers(frame):
     labels = measure.label(frame_arr)
     return get_all_mass_centers(labels)
 
-def active_colloids_tracking_pipeline(frames):
-    tracking_start = time.time()
-    # segmentacja
+def active_colloids_tracking_pipeline(frames, segmentation_method):
+    G = nx.DiGraph()
     num_frames = len(frames)
     num_cores = multiprocessing.cpu_count()
-    # segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(num_frames))
-    segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(num_frames))
-    
-    G = nx.DiGraph()
+
+    if segmentation_method == 'two_cc':
+        segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(len(frames)))
+    elif segmentation_method == 'watershed':
+        segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(len(frames)))
+    elif segmentation_method == 'simple_threshold':
+        pass
     
     all_mass_centers = []
-    start = time.time()
     all_mass_centers = Parallel(n_jobs=num_cores)(delayed(get_frame_mass_centers)(segments[i]) for i in range(num_frames))
-    end = time.time()
-    print('Elapsed seconds of segmentation:', end - start)
     
     # adding nodes
-    for i in range(num_frames):
+    for i in range(len(segments)):
         frame_mass_centers = all_mass_centers[i]
         for j in range(len(frame_mass_centers)):
             pos_x = frame_mass_centers[j][0]
@@ -200,17 +199,14 @@ def active_colloids_tracking_pipeline(frames):
         
     # weights should not be floats! We use only integers, otherwise calculations will last forever!
     resultFlowDict = nx.max_flow_min_cost(G, source, sink, capacity='capacity', weight='weight')
-    
-    tracking_end = time.time()
-    print('Tracking finished, elapsed seconds:', tracking_end - tracking_start)
-    
+        
     detected_objects = []
     
     visited = {}
     for node in G.nodes:
         visited[node] = False
 
-    results = [np.array(f) for f in frames]
+    results = [np.array(f) for f in segments]
     
     radius = 20
     for node in G.nodes:
