@@ -265,10 +265,6 @@ def pipeline_final(frames, segmentation_method):
     start = time.time()
     if segmentation_method == 'two_cc':
         segments = Parallel(n_jobs=num_cores)(delayed(two_cc.two_connected_components)(frames[i], channel="red",thresh=86) for i in range(start_frame, end_frame))
-    elif segmentation_method == 'mst':
-        pass
-    elif segmentation_method == 'ngc':
-        pass
     elif segmentation_method == 'watershed':
         segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(len(frames)))
     elif segmentation_method == 'simple_threshold':
