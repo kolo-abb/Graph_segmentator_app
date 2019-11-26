@@ -1,0 +1,10 @@
+*.pyc
+tracker/__pycache__/
+Graph_Segmentator/__pycache__/
+static/media/temp_vid/
+segmentator/__pycache__/
+static/media/matched
+segmentation_app/
+segmentation_app/migrations/
+static/media/*.mkv
+static/media/*.mp4

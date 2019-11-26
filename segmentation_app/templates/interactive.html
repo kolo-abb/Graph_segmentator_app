@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+ <script>
+ document.title = "Interactive"
+ </script>
+<div class="row">
+	<div class="column">
+		<h2>Interactive Segmentation</h2>
+		<a href="{% url 'interactive_desc' %}" class="button">Description</a>
+		<div class="column__block1">
+			<h3>Load foreground and background samples:</h3>
+			<form method="post" style="text-align: center;" enctype="multipart/form-data" action="{% url 'interactive' %}">{% csrf_token %}
+                {% csrf_token %}
+                <div class="block__row">
+					<label>Foreground:</label>
+					<input id="foreground" type="file" class="" name="foreground">
+				</div>
+				<div class="block__row">
+					<label>Background:<label>
+					<input id="background" type="file" class="" name="background">
+				</div>
+            <input type="submit" class="button" value="Submit" onclick="$('#loading').show();">
+            <input type="reset" class="button" value="Reset">
+        </form>
+		</div>
+	</div>
+	<div class="column">
+		<h2>Segmentation</h2>
+			{% if image %}
+				Original image:
+				<br>
+				<p style="text-align: center;"><img src="{{ image }}" alt=""  /></p>
+			
+				{% else %}
+				{% load static %}
+				<p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
+			{% endif %}
+			
+			{% if segmented_image %}
+				Segmented image:
+				<br>
+            	<p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
+        	{% else %}
+				<div id="loading" style="display:none;">
+					Loading!
+					<br>
+					<img src="/static/images/tenor.gif" alt="" /></div>
+				<br>
+			{% endif %}
+	</div>
+</div>
+{% endblock %}
+</html>

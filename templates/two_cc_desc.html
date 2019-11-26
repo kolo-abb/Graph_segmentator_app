@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+ <script>
+ document.title = "Two-cc"
+ </script>
+<h2>Two-connected components</h2>
+
+<h3>Parameters:</h3>
+<ul class="list">
+	<li>
+		Channel:
+		<ul>
+			<li>All</li>
+			<li>Red (recommended for bees)</li>
+			<li>Green</li>
+			<li>Blue (recommended for blood cells)</li>
+		</ul>
+	</li>
+	<li>
+		Threshold:
+		<ul>
+			<li>Otsu's threshold</li>
+			<li>Const</li>
+		</ul>
+	</li>
+	<li>Const (if was choosen above):
+		<ul>
+			<li>Real number</li>
+		</ul>
+	</li>
+	<li>Filling in holes:
+		<ul>
+			<li>Yes/No</li>
+		</ul>
+	</li>
+</ul>
+<h3>Steps:</h3>
+<ol class="list">
+	<li>
+		Prepare image
+		<ol type="a">
+			<li>Resize image if it is too big.</li>
+			<li>Enhance image (contrast, brightness, sharpness).</li>
+		</ol>
+	</li>
+	<li>
+		Convert image to binary version:
+		<ol type="a">
+			<li>Take choosen channel(s) under consideration.</li>
+			<li>If user chose all channels, convert image into grayscale.</li>
+			<li>Get binary version of image with use proper threshold (Otsu's threshold or const number).</li>
+			<li>Fill in holes (if proper option was choosen).</li>
+		</ol>
+	</li>
+	<li>
+		Prepare graph
+		<ol type="a">
+			<li>Create set of width*height (of image) vertices where each vertex corresponds to pixel on image.</li>
+			<li>Add edges to the graph: connect each vertex witch its upper, down, left and right neighbors.</li>
+		</ol>
+	</li>
+	<li>
+		Get two-connected components of graph
+		<ol type="a">
+			<li>Using proper algorith, get k-connected components of graph and choose k=2.</li>
+			<li>Reduce too small and too big components (eg. background).</li>
+			<li>Visualize effects of segmentation by assigning random color to each component.</li>
+			<li>Return segmented image and number of components.</li>
+		</ol>
+	</li>
+</ol>
+{% endblock %}
+</html>

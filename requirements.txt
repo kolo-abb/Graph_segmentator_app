@@ -1,0 +1,10 @@
+numpy
+pandas
+Django
+Pillow
+networkx
+opencv-python
+graphviz
+scipy 
+joblib
+munkres
