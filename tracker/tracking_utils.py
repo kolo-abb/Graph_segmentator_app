@@ -269,6 +269,8 @@ def pipeline_final(frames, segmentation_method):
         segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_segmentation)(frames[i]) for i in range(len(frames)))
     elif segmentation_method == 'rag_merging':
         segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.rag_merging_segmentation)(frames[i]) for i in range(len(frames)))
+    elif segmentation_method == 'simple_threshold':
+        segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_threshold)(frames[i], threshold=90) for i in range(len(frames)))
 
     end = time.time()
     print('elapsed seconds:', end - start)

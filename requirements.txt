@@ -8,3 +8,4 @@ graphviz
 scipy 
 joblib
 munkres
+cv2

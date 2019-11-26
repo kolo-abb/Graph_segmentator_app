@@ -20,7 +20,7 @@ from segmentator.mst_algorithms import threshold_mst_1, threshold_mst_2, thresho
 from segmentation_app.views.segmentation_views import context
 from tracker import main_api
 
-available_segmentation_methods = ['two_cc', 'rag_merging', 'watershed']
+available_segmentation_methods = ['two_cc', 'rag_merging', 'watershed', 'simple_threshold']
 available_tracking_algorithms = ['local_tracking', 'active_colloids_tracking']
 
 def tracking(request):

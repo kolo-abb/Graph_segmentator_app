@@ -3,6 +3,7 @@ from PIL import Image, ImageFilter, ImageEnhance
 from skimage import data, io, segmentation, color
 from skimage.future import graph
 import numpy as np
+import cv2
 
 
 def preparing_image(image, shape):
@@ -104,3 +105,14 @@ def rag_merging_segmentation(image):
     #         labels2[labels2 == x] = 0
 
     return np.array(drop_invalid_objects(labels2, lower_threshold=100, upper_threshold=1200), dtype='int16')
+
+
+def simple_threshold(image, threshold):
+    img = np.array(image)[:,:,0]
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    img = cv2.medianBlur(img, 5)
+    ret, th1 = cv2.threshold(img, threshold, 255, cv2.THRESH_BINARY)
+    binary = (th1 == 255).astype(int)
+    arr = 1 - binary
+    labels = measure.label(arr)[:,:,0]
+    return np.array(drop_invalid_objects(labels, lower_threshold=100, upper_threshold=1200), dtype='int16')
