@@ -29,11 +29,11 @@ def prepare_frames(vidcap, n_frames=50, window=(0, 250, 500, 430)):
     return frames
 
 
-def tracking_local(frames, segmentation_method):
+def tracking_local(frames, segmentation_method, simple_threshold):
     num_cores = multiprocessing.cpu_count()
     start_frame = 0
     end_frame = len(frames)
-    matchings = pipeline_final(frames, segmentation_method)
+    matchings = pipeline_final(frames, segmentation_method, simple_threshold)
     
     pathOut = 'static/media/tracking_video.mkv'
     tracking_movie = cv2.VideoWriter(pathOut, apiPreference=0, fourcc = cv2.VideoWriter_fourcc(*'DIVX'), fps=15, frameSize=frames[0].size)
@@ -42,8 +42,8 @@ def tracking_local(frames, segmentation_method):
     tracking_movie.release()
     return pathOut
 
-def active_colloids_tracking(frames, segmentation_method):
-    results, G, resultFlowDict = active_colloids_tracking_pipeline(frames, segmentation_method)
+def active_colloids_tracking(frames, segmentation_method, simple_threshold):
+    results, G, resultFlowDict = active_colloids_tracking_pipeline(frames, segmentation_method, simple_threshold)
 
     # for i in range(start_frame, end_frame):
     #     cv2.imwrite("static/media/matched/match%d.jpg" % i, np.float32(results[i]) )

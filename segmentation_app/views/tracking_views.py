@@ -64,10 +64,14 @@ def choose_alg_tracking(request):
         video = cv2.VideoCapture('static/media/temp_video.mp4')
         frames = main_api.prepare_frames(video, n_frames, (a, b, c, d))
 
+        simple_threshold = int(request.POST.get("simple_threshold"))
+        if simple_threshold not in range(256):
+            simple_threshold = 90
+
         if tracking_algorithm == "local_tracking":
-            video_out = main_api.tracking_local(frames, segmentation_method)
+            video_out = main_api.tracking_local(frames, segmentation_method, simple_threshold)
         elif tracking_algorithm == 'active_colloids_tracking':
-            video_out = main_api.active_colloids_tracking(frames, segmentation_method)
+            video_out = main_api.active_colloids_tracking(frames, segmentation_method, simple_threshold)
             
         context['video_out'] = '/' + video_out
         return render(request, 'local_video.html', context)

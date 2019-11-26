@@ -47,7 +47,12 @@
             <input type="number" name="b" value=250><br>
             <input type="number" name="c" value=500><br>
             <input type="number" name="d" value=430><br>
-          <br><br>
+          <br>
+            <div class="block__row">
+              <label>Threshold (if selected Simple Threshold method):</label>
+              <input type="number" name="simple_threshold" value=90>
+            </div>
+            <br><br>
             {% if video %}
             <input type="submit" value="Submit">
             {% else %}

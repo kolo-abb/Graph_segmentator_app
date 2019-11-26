@@ -245,7 +245,7 @@ class Matching:
 
 
 
-def pipeline_final(frames, segmentation_method):
+def pipeline_final(frames, segmentation_method, simple_threshold):
 
     width, height = math.ceil(frames[0].size[0] / 8), math.ceil(frames[0].size[1] / 8)
     diameter = math.sqrt(width ** 2 + height ** 2)
@@ -270,7 +270,7 @@ def pipeline_final(frames, segmentation_method):
     elif segmentation_method == 'rag_merging':
         segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.rag_merging_segmentation)(frames[i]) for i in range(len(frames)))
     elif segmentation_method == 'simple_threshold':
-        segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_threshold)(frames[i], threshold=90) for i in range(len(frames)))
+        segments = Parallel(n_jobs=num_cores)(delayed(simple_segmentation.simple_threshold)(frames[i], simple_threshold) for i in range(len(frames)))
 
     end = time.time()
     print('elapsed seconds:', end - start)

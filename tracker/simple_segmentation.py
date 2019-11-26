@@ -108,6 +108,7 @@ def rag_merging_segmentation(image):
 
 
 def simple_threshold(image, threshold):
+    print('Simple threshold = ', threshold)
     img = np.array(image)[:,:,0]
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     img = cv2.medianBlur(img, 5)
