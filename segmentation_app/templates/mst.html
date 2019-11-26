@@ -88,13 +88,12 @@
 				Segmented image:
 				<br>
             	<p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
-        	{% else %}
+			{% endif %}
 				<div id="loading" style="display:none;">
 					Loading!
 					<br>
 					<img src="/static/images/tenor.gif" alt="" /></div>
 				<br>
-			{% endif %}
         {% if counter %}
             <p style="text-align: center;">Number of objects: {{ counter }}</p>
         {% endif %}

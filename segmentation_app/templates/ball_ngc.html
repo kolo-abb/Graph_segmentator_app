@@ -41,7 +41,6 @@
 
 	<div class="column">
 		<h2>Segmentation</h2>
-		<div id="loading" style="display:none;"><img src="/static/images/tenor.gif" alt="" />Loading!</div>
         {% if segmented_image %}
             <p style="text-align: center;"><img src="{{ segmented_image }}" alt=""  /></p>
         {% endif %}
@@ -54,6 +53,8 @@
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
+				<div id="loading" style="display:none;"><img src="/static/images/tenor.gif" alt="" />Loading!</div>
+
 		{% if segmented_image %}
 			<form method="post" style="text-align: center;" action="{% url 'save_ball_ngc' %}">
 				{% csrf_token %}

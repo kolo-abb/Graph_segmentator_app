@@ -226,4 +226,4 @@ def active_colloids_tracking_pipeline(frames, segmentation_method, simple_thresh
     
     results = [Image.fromarray(r) for r in results]
     
-    return results, G, resultFlowDict # type: list<Image>
+    return results, G, resultFlowDict 

@@ -54,7 +54,7 @@
             </div>
             <br><br>
             {% if video %}
-            <input type="submit" value="Submit">
+            <input type="submit" value="Submit" onclick="$('#loading').show();">
             {% else %}
             <input type="submit" value="Submit" disabled>
             {% endif %}
@@ -72,6 +72,7 @@
             {% load static %}
             <p style="text-align: center;"><img src="{% static 'images/placeholder.png' %}" alt="" width="400" height="400" /></p>
         {% endif %}
+      <div id="loading" style="display:none;"><img src="/static/images/tenor.gif" alt="" />Loading!</div>
 
   </div>
 </div>

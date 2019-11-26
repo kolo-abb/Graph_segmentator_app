@@ -116,4 +116,4 @@ def simple_threshold(image, threshold):
     binary = (th1 == 255).astype(int)
     arr = 1 - binary
     labels = measure.label(arr)[:,:,0]
-    return np.array(drop_invalid_objects(labels, lower_threshold=100, upper_threshold=1200), dtype='int16')
+    return np.array(drop_invalid_objects(labels, lower_threshold=10, upper_threshold=1200), dtype='int16')
