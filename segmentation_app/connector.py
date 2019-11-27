@@ -130,7 +130,7 @@ def load_tracking(name):
     all_info['description'] = data[0][0]
     print(BASE_DIR)
     all_info['tracking_name'] = '/static/media/tracking_video.mkv'
-    all_info['base_name'] = '/static/media/tracking_video.mkv'
+    all_info['base_name'] = '/static/media/base_video.mkv'
 
     writeTofile(data[0][2], BASE_DIR + all_info['tracking_name'])
     writeTofile(data[0][1], BASE_DIR + all_info['base_name'])
